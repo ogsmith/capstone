@@ -5,16 +5,14 @@ import pandas as pd
 class Node_State_Model():
 	port_numbers = 13
 	port_states = [False]*port_numbers
+	hertz = 60
 	#sends the state of a paticular port
 	#Port_Number as int -> binary int
 	def send_state(self,port_number):
 		return self.port_states[port_number]
 
 	def read_csv(self):
-		print(self.port_states)
 		df = pd.read_csv('states.csv', skiprows=[1],sep=',',header=None)
-		print(df[1].values)
-
 	#sends the state of a nodes
 	#Null -> array of binary ints
 	def send_states(self):
@@ -30,31 +28,35 @@ class Node_State_Model():
 	def set_port_to(self,port_number,state):
 		self.port_states[port_number] = state
 
+	def send_hertz(self):
+		print self.hertz
+		return self.hertz
 
+	def set_hertz(self, hertz):
+		self.hertz = hertz
 
 test_class = Node_State_Model()
-# test_class.send_states()
-print(test_class.read_csv())
-# print "state all"
-# print test_class.send_states()
-# print "state 4"
-# print test_class.send_state(4)
-# print "state 7"
-# print test_class.send_state(7)
-#
-# print "toggle 7"
-# test_class.toggle_port(7)
-# print "set 4 to True"
-# test_class.set_port_to(4,True)
-#
-# print "state all"
-# print test_class.send_states()
-# print "state 4"
-# print test_class.send_state(4)
-# print "state 7"
-# print test_class.send_state(7)
-#
-# print "toggle 7"
-# test_class.toggle_port(7)
-# print "state 7"
-# print test_class.send_state(7)
+test_class.send_states()
+print "state all"
+print test_class.send_states()
+print "state 4"
+print test_class.send_state(4)
+print "state 7"
+print test_class.send_state(7)
+
+print "toggle 7"
+test_class.toggle_port(7)
+print "set 4 to True"
+test_class.set_port_to(4,True)
+
+print "state all"
+print test_class.send_states()
+print "state 4"
+print test_class.send_state(4)
+print "state 7"
+print test_class.send_state(7)
+
+print "toggle 7"
+test_class.toggle_port(7)
+print "state 7"
+print test_class.send_state(7)

@@ -1,10 +1,11 @@
 import serial # you need to install the pySerial :pyserial.sourceforge.net
 import time
 import os
+import datetime
 execfile("model.py")
 
 # Serial port may be different!
-arduino = serial.Serial('/dev/cu.usbmodem1421', 9600)
+arduino = serial.Serial('/dev/cu.usbmodem1411', 9600)
 # connection takes 2 seconds to create
 time.sleep(2)
 model = Node_State_Model()
@@ -28,6 +29,14 @@ class StandardController:
 	#Port_Number as int, bool -> null
 	def set_port_to(self,port_number,state):
 		model.set_port_to(port_number,state)
+
+	def get_frequency(self):
+		return float(1)/model.send_hertz()
+
+	def set_hertz(self):
+		hertz = input("Enter Hertz: ")
+		print(hertz)
+		model.set_hertz(hertz)
 
 	#sets the state of all ports to 0
 	#Null->NUll
@@ -93,14 +102,21 @@ class StandardController:
 
 test_obj = StandardController()
 
-for x in range(0,5):
-	print(test_obj.getstates())
-	q = input("what would you like to toggle?: ")
-	print(q)
-	test_obj.toggle_port(q)
-	test_obj.send_signal()
-	print(test_obj.getstates())
-	time.sleep(2)
+times = []
+
+
+test_obj.set_hertz()
+period = test_obj.get_frequency()
+print period
+t=time.time()
+for x in range(0,25):
+	t+=period
+	time.sleep(t-time.time())
+	ti = datetime.datetime.now()
+	times.append(ti)
+
+for x in range(0,24):
+	print times[x+1]-times[x]
 
 # test_obj.send_signal()
 # test_obj.toggle_port(4)
