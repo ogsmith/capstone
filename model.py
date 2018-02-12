@@ -35,28 +35,28 @@ class Node_State_Model():
 	def set_hertz(self, hertz):
 		self.hertz = hertz
 
-test_class = Node_State_Model()
-test_class.send_states()
-print "state all"
-print test_class.send_states()
-print "state 4"
-print test_class.send_state(4)
-print "state 7"
-print test_class.send_state(7)
-
-print "toggle 7"
-test_class.toggle_port(7)
-print "set 4 to True"
-test_class.set_port_to(4,True)
-
-print "state all"
-print test_class.send_states()
-print "state 4"
-print test_class.send_state(4)
-print "state 7"
-print test_class.send_state(7)
-
-print "toggle 7"
-test_class.toggle_port(7)
-print "state 7"
-print test_class.send_state(7)
+# test_class = Node_State_Model()
+# test_class.send_states()
+# print "state all"
+# print test_class.send_states()
+# print "state 4"
+# print test_class.send_state(4)
+# print "state 7"
+# print test_class.send_state(7)
+#
+# print "toggle 7"
+# test_class.toggle_port(7)
+# print "set 4 to True"
+# test_class.set_port_to(4,True)
+#
+# print "state all"
+# print test_class.send_states()
+# print "state 4"
+# print test_class.send_state(4)
+# print "state 7"
+# print test_class.send_state(7)
+#
+# print "toggle 7"
+# test_class.toggle_port(7)
+# print "state 7"
+# print test_class.send_state(7)
