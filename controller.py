@@ -141,7 +141,7 @@ class StandardController:
 test_obj = StandardController()
 
 times = []
-period = .0001
+period = .000001
 s = input("How many seconds do you want this to run?:")
 q = int(s*(1/period))
 print 1/period
@@ -149,6 +149,7 @@ test_obj.toggle_port(8)
 test_obj.toggle_port(4)
 test_obj.set_pulse_length(8,.1)
 test_obj.set_wave_length(8,.3)
+test_obj.set_pulse_length(4,.25)
 test_obj.set_pulse_length(4,.25)
 
 t=time.time()

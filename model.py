@@ -6,7 +6,8 @@ class Node:
 	pulse_length = .0002
 	wave_length = .5
 	iteration = 0
-	system_period = .0001
+	system_period = .000001
+	c = .01/system_period
 
 	def toggle_onoff(self):
 		if self.on_off == False:
@@ -41,9 +42,9 @@ class Node:
 		# print(self.pulse_length)
 		# print(self.iteration)
 		if self.on_off:
-			if (self.iteration*100) > (self.wave_length/self.system_period):
+			if (self.iteration*self.c) > (self.wave_length/self.system_period):
 				self.iteration = 0
-			if ((self.iteration*100) * self.system_period) <  self.pulse_length:
+			if ((self.iteration*self.c) * self.system_period) <  self.pulse_length:
 				self.iteration = self.iteration + 1
 
 				return True
