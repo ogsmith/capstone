@@ -6,6 +6,8 @@ class Node_State_Model():
 	port_numbers = 13
 	port_states = [False]*port_numbers
 	hertz = 60
+	pulse_lengths = [.0002]*port_numbers
+	wave_lengths = [.5]*port_numbers
 	#sends the state of a paticular port
 	#Port_Number as int -> binary int
 	def send_state(self,port_number):
@@ -34,6 +36,18 @@ class Node_State_Model():
 
 	def set_hertz(self, hertz):
 		self.hertz = hertz
+
+	def set_pulse_lengths(self,port_number,time):
+		self.pulse_lengths[port_number] = time
+
+	def set_wave_lengths(self,port_number,time):
+		self.wave_lengths[port_number] = time
+
+	def get_pulse_lengths(self):
+		return self.pulse_lengths
+
+	def get_wave_lengths(self):
+		return self.wave_lengths
 
 # test_class = Node_State_Model()
 # test_class.send_states()

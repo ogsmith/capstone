@@ -3,14 +3,15 @@ import time
 from model import Node_State_Model
 import os
 import datetime
-execfile("model.py")
+# execfile("model.py")
+execfile("node.py")
 
 # Serial port may be different!
-arduino = serial.Serial('/dev/cu.usbmodem1421', 9600)
+# arduino = serial.Serial('/dev/cu.usbmodem1421', 9600)
 # connection takes 2 seconds to create
 time.sleep(2)
-model = Node_State_Model()
-
+# model = Node_State_Model()
+node = Node()
 
 # controlles the blah blah to do blah blah
 class StandardController:
@@ -20,23 +21,23 @@ class StandardController:
 
 # gets the state of a paticular port from the model
 # Port_Number as int -> binary int
-	def getstate(self, port_number):
-		return model.send_state(port_number)
+	# def getstate(self, port_number):
+	# 	return model.send_state(port_number)
 
 # gets the state of a nodes from the model
 # Null -> array of binary ints
-	def getstates(self):
-		return model.send_states()
+	# def getstates(self):
+	# 	return model.send_states()
 
 # toggle the state to paticular node
 # Port_Number as int -> null
-	def toggle_port(self, port_number):
-		model.toggle_port(port_number)
+	def toggle_onoff(self):
+		node.toggle_onoff()
 
 # sets the state to paticular node to a given value
 # Port_Number as int, bool -> null
-	def set_port_to(self, port_number, state):
-		model.set_port_to(port_number, state)
+	# def set_port_to(self, port_number, state):
+	# 	model.set_port_to(port_number, state)
 
 	def get_frequency(self):
 		return float(1)/model.send_hertz()
@@ -45,6 +46,30 @@ class StandardController:
 		hertz = input("Enter Hertz: ")
 		print(hertz)
 		model.set_hertz(hertz)
+
+	def get_pulse_lengths(self):
+		return model.get_pulse_lengths()
+
+	def get_wave_lengths(self):
+		return model.get_wave_lengths()
+
+	def set_pulse_lengths(self,port_number,time):
+		model.set_pulse_lengths(port_number,time)
+
+	def set_wave_lengths(self,port_number,time):
+		model.set_wave_lengths(port_number,time)
+
+	def set_delays(self):
+		delays = []
+		pulses = self.get_pulse_lengths()
+		waves = self.get_wave_lengths()
+		count = 0
+		for wave in waves:
+			count = count+1
+			d = wave - pulses[0]
+			delays.append(d)
+		for d in delays:
+			print d
 
 #sets the state of all ports to 0
 #Null->NUll
@@ -110,57 +135,24 @@ class StandardController:
 
 test_obj = StandardController()
 
-times = []
-
-test_obj.set_hertz()
-period = test_obj.get_frequency()
-s = input("How many seconds do you want this to run?:")
-# toggle = input("What port would you like to toggle?")
+test_obj.set_delays()
+# times = []
 #
-# toggle2=  input("What other port would you like to toggle?")
-# toggle3=  input("What other port would you like to toggle?")
-# toggle4=  input("What other port would you like to toggle?")
-# toggle5=  input("What other port would you like to toggle?")
-# toggle6=  input("What other port would you like to toggle?")
-# toggle7=  input("What other port would you like to toggle?")
-# toggle8=  input("What other port would you like to toggle?")
-# toggle9=  input("What other port would you like to toggle?")
-# toggle10=  input("What other port would you like to toggle?")
-
-q = int(s*(1/period))
-print 1/period
-t=time.time()
-count = 0
-
-for x in range(0,q):
-	t+=period
-	while t > time.time():
-		pass
-	count = count + 1
-	test_obj.toggle_port(2)
-	test_obj.toggle_port(3)
-	test_obj.toggle_port(4)
-	test_obj.toggle_port(5)
-	test_obj.toggle_port(6)
-	test_obj.toggle_port(7)
-	test_obj.toggle_port(8)
-	test_obj.toggle_port(9)
-	test_obj.toggle_port(10)
-	test_obj.toggle_port(11)
-	test_obj.send_signal()
-	# print(test_obj.getstates())
-	# if count % 1 == 0:
-	# 	test_obj.toggle_port(toggle)
-	# 	test_obj.toggle_port(toggle2)
-	# 	test_obj.send_signal()
-    #
-	# else:
-	# 	test_obj.toggle_port(toggle3)
-	# 	test_obj.toggle_port(toggle4)
-	# 	test_obj.send_signal()
-
-# for x in range(0,24):
-# 	print times[x+1]-times[x]
-
+# test_obj.set_hertz()
+# period = test_obj.get_frequency()
+# s = input("How many seconds do you want this to run?:")
+# q = int(s*(1/period))
+# print 1/period
+# t=time.time()
+# count = 0
+#
+# for x in range(0,q):
+# 	t+=period
+# 	while t > time.time():
+# 		pass
+# 	count = count + 1
+# 	test_obj.toggle_port(2)
+# 	test_obj.send_signal()
+#
 
 # Default T = 500milliseconds DC = 200 microseconds
