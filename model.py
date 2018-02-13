@@ -6,7 +6,7 @@ class Node:
 	pulse_length = .0002
 	wave_length = .5
 	iteration = 0
-	system_period = .000001
+	system_period = .0001
 	c = .01/system_period
 
 	def toggle_onoff(self):

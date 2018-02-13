@@ -52,10 +52,10 @@ class StandardController:
 	def get_wave_length(self,port_number):
 		return model.get_wave_lengths(port_number)
 
-	def get_pulse_length(self):
+	def get_pulse_lengths(self):
 		return model.get_pulse_lengths()
 
-	def get_wave_length(self):
+	def get_wave_lengths(self):
 		return model.get_wave_lengths()
 
 	def set_pulse_length(self,port_number,time):
@@ -141,8 +141,8 @@ class StandardController:
 test_obj = StandardController()
 
 times = []
-period = .000001
-s = input("How many seconds do you want this to run?:")
+period = .0001
+s = .1
 q = int(s*(1/period))
 print 1/period
 test_obj.toggle_port(8)
@@ -150,8 +150,26 @@ test_obj.toggle_port(4)
 test_obj.set_pulse_length(8,.1)
 test_obj.set_wave_length(8,.3)
 test_obj.set_pulse_length(4,.25)
-test_obj.set_pulse_length(4,.25)
 
+t=time.time()
+for x in range(0,q):
+	t+=period
+	while t > time.time():
+		pass
+	test_obj.send_signal()
+test_obj.toggle_port(2)
+test_obj.toggle_port(3)
+test_obj.toggle_port(5)
+test_obj.toggle_port(6)
+test_obj.toggle_port(7)
+test_obj.toggle_port(9)
+test_obj.toggle_port(10)
+test_obj.toggle_port(11)
+test_obj.toggle_port(12)
+test_obj.toggle_port(13)
+test_obj.set_pulse_length(8,.5)
+test_obj.set_wave_length(8,1)
+test_obj.set_wave_length(4,1)
 t=time.time()
 for x in range(0,q):
 	t+=period
