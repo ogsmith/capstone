@@ -1,11 +1,8 @@
-import numpy as np
-import pandas as pd
-
 class Node():
     def __init__(self, port_number):
         self.port_number = port_number
         self.on_off = False
-        self.enabled = True
+        self.enabled = False
         self.pulse_length = .0002
         self.wave_length = .5
         self.iteration = 0
@@ -16,18 +13,24 @@ class Node():
         return self.port_number
 
     def toggle_onoff(self):
-        self.on_off = not self.on_off
+        if self.enabled:
+            self.on_off = not self.on_off
 
     def set_onoff(self, state):
-        self.on_off = state
+        if self.enabled:
+            self.on_off = state
 
     def get_onoff(self):
         return self.on_off
 
     def toggle_enabled(self):
+        if self.enabled:
+            self.on_off = False
         self.enabled = not self.enabled
 
     def set_enabled(self, state):
+        if state is False:
+            self.on_off = False
         self.enabled = state
 
     def get_enabled(self):
@@ -52,10 +55,6 @@ class Node():
         self.pulse_length = pulse_length
 
     def get_state(self):
-        # print(self.wave_length/self.system_period)
-        # print(self.iteration * self.system_period)
-        # print(self.pulse_length)
-        # print(self.iteration)
         if self.on_off:
             if (self.iteration * self.c) > (self.wave_length / self.system_period):
                 self.iteration = 0
@@ -99,6 +98,9 @@ class Node_State_Model():
 
     def toggle_port_enabled(self, port_number):
         self.ports[port_number].toggle_enabled()
+
+    def get_port_enabled(self, port_number):
+        return self.ports[port_number].get_enabled()
 
     # sets the state to paticular node to a given value
     # Port_Number as int, bool -> null

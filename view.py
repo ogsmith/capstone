@@ -11,6 +11,7 @@ else:
     import tkinter as Tk
 
 from widgets.InductorWidget import InductorWidget
+from widgets.ResetButton import ResetButton
 
 MAX_BUTTONS_PER_COLUMN = 5
 
@@ -31,9 +32,13 @@ class View():
             inductor_widget = InductorWidget(self.inductor_button_frame, i)
             self.inductors.append(inductor_widget)
 
-    def register(self, controller):
+        self.reset_button = ResetButton(self.inductor_button_frame, self.inductors)
+
+    def register(self, controller, model):
+        # gives every widget a reference to controller/model
         for inductor_widget in self.inductors:
-            inductor_widget.register(controller)
+            inductor_widget.register(controller, model)
+        self.reset_button.register(controller, model)
 
 
     # def validate_input(self, input):

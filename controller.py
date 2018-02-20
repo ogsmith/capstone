@@ -8,7 +8,6 @@ from view import View
 
 class StandardController:
     def __init__(self):
-        self.port_count = 14
         # Serial port may be different!
         # self.arduino = serial.Serial('/dev/cu.usbmodem1421', 9600)
         self.arduino = None
@@ -16,23 +15,11 @@ class StandardController:
         # time.sleep(2)
         self.model = Node_State_Model()
         self.view = View(num_inductors=self.model.port_numbers)
+        self.port_count = self.model.port_numbers
 
     def run(self):
-        self.view.register(self)
-        self.update_thread = Thread(target=self.update_view_loop)
-        self.update_thread.setDaemon(True)
-        self.update_thread.start()
+        self.view.register(self, self.model)
         self.view.mainloop()
-
-    def update_view_loop(self):
-        while True:
-            for node in self.model.ports:
-                port_number = node.get_port_number()
-                on_off = node.get_onoff()
-                enabled = node.get_enabled()
-                wave_length = node.get_wave_length()
-                pulse_length = node.get_pulse_length()
-                self.view.inductors[port_number].update_state(on_off, enabled, wave_length, pulse_length)
 
     # gets the state of a paticular port from the model
     # Port_Number as int -> binary int
@@ -98,7 +85,7 @@ class StandardController:
     # sets the state of all ports to 0
     # Null->NUll
     def reset(self):
-        for i in range(0, self.port_count):
+        for i in range(self.port_count):
             self.set_port_to(i, False)
 
     def send_signal(self):
