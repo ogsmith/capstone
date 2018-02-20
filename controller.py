@@ -9,10 +9,10 @@ from view import View
 class StandardController:
     def __init__(self):
         # Serial port may be different!
-        # self.arduino = serial.Serial('/dev/cu.usbmodem1421', 9600)
-        self.arduino = None
+        self.arduino = serial.Serial('/dev/cu.usbmodem1421', 9600)
+        # self.arduino = None
         # connection takes 2 seconds to create
-        # time.sleep(2)
+        time.sleep(2)
         self.model = Node_State_Model()
         self.view = View(num_inductors=self.model.port_numbers)
         self.port_count = self.model.port_numbers
@@ -34,7 +34,7 @@ class StandardController:
     def get_state_firing(self, port_number):
         return self.model.get_state_firing(port_number)
 
-    def get_states_firing(self):
+    def getstates_firing(self):
         return self.model.get_states_firing()
 
     # toggle the state to paticular node
