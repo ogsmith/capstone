@@ -55,8 +55,7 @@ class InductorWidget():
             new_inductor_color = 'green' if on_off is True else 'red'
             self.inductor_button['bg'] = new_inductor_color
         self.on_off = on_off
-        self.controller.send_signal()
-        
+
     def enable_button_command(self):
         self.controller.toggle_port_enabled(self.port_number)
         enabled = self.model.get_port_enabled(self.port_number)
@@ -66,10 +65,8 @@ class InductorWidget():
             self.enable_button['text'] = 'Enabled' if enabled is True else 'Disabled'
             self.enable_button['bg'] = '#a6a6a6' if enabled is True else '#737373'
         self.enabled = enabled
-        self.controller.send_signal()
 
 
     def reset(self):
         self.on_off = False
         self.inductor_button['bg'] = 'red'
-        self.controller.send_signal()

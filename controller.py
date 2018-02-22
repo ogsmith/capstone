@@ -1,16 +1,24 @@
 import time
 from threading import Thread
-
+import serial.tools.list_ports
 import serial
-
 from model import Node_State_Model
 from view import View
 
+
+
 class StandardController:
 	def __init__(self):
+		port_id = ""
+
+		ports = list(serial.tools.list_ports.comports())
+		for p in ports:
+			if "Generic" in p[1] and port_id == "":
+				port_id = p[0]
+
 		# Serial port may be different!
-		#self.arduino = serial.Serial('/dev/cu.usbmodem1421', 9600)
-		self.arduino = None
+		self.arduino = serial.Serial(port_id, 9600)
+		#self.arduino = None
 		# connection takes 2 seconds to create
 		time.sleep(2)
 		self.model = Node_State_Model()
@@ -21,7 +29,7 @@ class StandardController:
 		self.view.register(self, self.model)
 		self.view.mainloop()
 
-	def run_loop(self):	   
+	def run_loop(self):
 		period = .0001
 		while 1:
 			t = time.time()
