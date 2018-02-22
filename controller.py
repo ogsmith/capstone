@@ -7,177 +7,187 @@ from model import Node_State_Model
 from view import View
 
 class StandardController:
-    def __init__(self):
-        # Serial port may be different!
-        self.arduino = serial.Serial('/dev/cu.usbmodem1421', 9600)
-        # self.arduino = None
-        # connection takes 2 seconds to create
-        time.sleep(2)
-        self.model = Node_State_Model()
-        self.view = View(num_inductors=self.model.port_numbers)
-        self.port_count = self.model.port_numbers
+	def __init__(self):
+		# Serial port may be different!
+		#self.arduino = serial.Serial('/dev/cu.usbmodem1421', 9600)
+		self.arduino = None
+		# connection takes 2 seconds to create
+		time.sleep(2)
+		self.model = Node_State_Model()
+		self.view = View(num_inductors=self.model.port_numbers)
+		self.port_count = self.model.port_numbers
 
-    def run(self):
-        self.view.register(self, self.model)
-        self.view.mainloop()
+	def run_view(self):
+		self.view.register(self, self.model)
+		self.view.mainloop()
 
-    # gets the state of a paticular port from the model
-    # Port_Number as int -> binary int
-    def get_state_onoff(self, port_number):
-        return self.model.get_state_onoff(port_number)
+	def run_loop(self):	   
+		period = .0001
+		while 1:
+			t = time.time()
+			t += period
+			while t > time.time():
+				pass
+			self.send_signal()
 
-    # gets the state of a nodes from the model
-    # Null -> array of binary ints
-    def get_states_onoff(self):
-        return self.model.get_states_onoff()
+	# gets the state of a paticular port from the model
+	# Port_Number as int -> binary int
+	def get_state_onoff(self, port_number):
+		return self.model.get_state_onoff(port_number)
 
-    def get_state_firing(self, port_number):
-        return self.model.get_state_firing(port_number)
+	# gets the state of a nodes from the model
+	# Null -> array of binary ints
+	def get_states_onoff(self):
+		return self.model.get_states_onoff()
 
-    def getstates_firing(self):
-        return self.model.get_states_firing()
+	def get_state_firing(self, port_number):
+		return self.model.get_state_firing(port_number)
 
-    # toggle the state to paticular node
-    # Port_Number as int -> null
-    # def toggle_onoff(self):
-    # 	node.toggle_onoff()
-    def toggle_port_onoff(self, port_number):
-        self.model.toggle_port_onoff(port_number)
+	def getstates_firing(self):
+		return self.model.get_states_firing()
 
-    def toggle_port_enabled(self, port_number):
-        self.model.toggle_port_enabled(port_number)
+	# toggle the state to paticular node
+	# Port_Number as int -> null
+	# def toggle_onoff(self):
+	# 	node.toggle_onoff()
+	def toggle_port_onoff(self, port_number):
+		self.model.toggle_port_onoff(port_number)
 
-    # sets the state to paticular node to a given value
-    # Port_Number as int, bool -> null
-    def set_port_to(self, port_number, state):
-        self.model.set_port_to(port_number, state)
+	def toggle_port_enabled(self, port_number):
+		self.model.toggle_port_enabled(port_number)
 
-    def get_pulse_length(self, port_number):
-        return self.model.get_pulse_length(port_number)
+	# sets the state to paticular node to a given value
+	# Port_Number as int, bool -> null
+	def set_port_to(self, port_number, state):
+		self.model.set_port_to(port_number, state)
 
-    def get_wave_length(self, port_number):
-        return self.model.get_wave_length(port_number)
+	def get_pulse_length(self, port_number):
+		return self.model.get_pulse_length(port_number)
 
-    def get_pulse_lengths(self):
-        return self.model.get_pulse_lengths()
+	def get_wave_length(self, port_number):
+		return self.model.get_wave_length(port_number)
 
-    def get_wave_lengths(self):
-        return self.model.get_wave_lengths()
+	def get_pulse_lengths(self):
+		return self.model.get_pulse_lengths()
 
-    def set_pulse_length(self, port_number, time):
-        self.model.set_pulse_lengths(port_number, time)
+	def get_wave_lengths(self):
+		return self.model.get_wave_lengths()
 
-    def set_wave_length(self, port_number, time):
-        self.model.set_wave_lengths(port_number, time)
+	def set_pulse_length(self, port_number, time):
+		self.model.set_pulse_lengths(port_number, time)
 
-    def get_delays(self):
-        delays = []
-        pulses = self.get_pulse_lengths()
-        waves = self.get_wave_lengths()
-        count = 0
-        for wave in waves:
-            count = count + 1
-            d = wave - pulses[0]
-            delays.append(d)
-        for d in delays:
-            print d
+	def set_wave_length(self, port_number, time):
+		self.model.set_wave_lengths(port_number, time)
 
-    # sets the state of all ports to 0
-    # Null->NUll
-    def reset(self):
-        for i in range(self.port_count):
-            self.set_port_to(i, False)
+	def get_delays(self):
+		delays = []
+		pulses = self.get_pulse_lengths()
+		waves = self.get_wave_lengths()
+		count = 0
+		for wave in waves:
+			count = count + 1
+			d = wave - pulses[0]
+			delays.append(d)
+		for d in delays:
+			print d
 
-    def send_signal(self):
-        port = self.getstates_firing()
-        if port[0]:
-            self.arduino.write("0")
-        else:
-            self.arduino.write(")")
-        if port[1]:
-            self.arduino.write("1")
-        else:
-            self.arduino.write("!")
-        if port[2]:
-            self.arduino.write("2")
-        else:
-            self.arduino.write("@")
-        if port[3]:
-            self.arduino.write("3")
-        else:
-            self.arduino.write("#")
-        if port[4]:
-            self.arduino.write("4")
-        else:
-            self.arduino.write("$")
-        if port[5]:
-            self.arduino.write("5")
-        else:
-            self.arduino.write("%")
-        if port[6]:
-            self.arduino.write("6")
-        else:
-            self.arduino.write("^")
-        if port[7]:
-            self.arduino.write("7")
-        else:
-            self.arduino.write("&")
-        if port[8]:
-            self.arduino.write("8")
-        else:
-            self.arduino.write("*")
-        if port[9]:
-            self.arduino.write("9")
-        else:
-            self.arduino.write("(")
-        if port[10]:
-            self.arduino.write("t")
-        else:
-            self.arduino.write("T")
-        if port[11]:
-            self.arduino.write("e")
-        else:
-            self.arduino.write("E")
-        if port[12]:
-            self.arduino.write("w")
-        else:
-            self.arduino.write("W")
+	# sets the state of all ports to 0
+	# Null->NUll
+	def reset(self):
+		for i in range(self.port_count):
+			self.set_port_to(i, False)
+
+	def send_signal(self):
+		port = self.getstates_firing()
+		if self.arduino is not None:
+			if port[0]:
+				self.arduino.write("0")
+			else:
+				self.arduino.write(")")
+			if port[1]:
+				self.arduino.write("1")
+			else:
+				self.arduino.write("!")
+			if port[2]:
+				self.arduino.write("2")
+			else:
+				self.arduino.write("@")
+			if port[3]:
+				self.arduino.write("3")
+			else:
+				self.arduino.write("#")
+			if port[4]:
+				self.arduino.write("4")
+			else:
+				self.arduino.write("$")
+			if port[5]:
+				self.arduino.write("5")
+			else:
+				self.arduino.write("%")
+			if port[6]:
+				self.arduino.write("6")
+			else:
+				self.arduino.write("^")
+			if port[7]:
+				self.arduino.write("7")
+			else:
+				self.arduino.write("&")
+			if port[8]:
+				self.arduino.write("8")
+			else:
+				self.arduino.write("*")
+			if port[9]:
+				self.arduino.write("9")
+			else:
+				self.arduino.write("(")
+			if port[10]:
+				self.arduino.write("t")
+			else:
+				self.arduino.write("T")
+			if port[11]:
+				self.arduino.write("e")
+			else:
+				self.arduino.write("E")
+			if port[12]:
+				self.arduino.write("w")
+			else:
+				self.arduino.write("W")
 
 if __name__ == '__main__':
-    test_obj = StandardController()
-    times = []
-    period = .0001
-    s = .1
-    q = int(s * (1 / period))
-    print 1 / period
-    test_obj.toggle_port(8)
-    test_obj.toggle_port(4)
-    test_obj.set_pulse_length(8, .1)
-    test_obj.set_wave_length(8, .3)
-    test_obj.set_pulse_length(4, .25)
+	test_obj = StandardController()
+	times = []
+	period = .0001
+	s = .1
+	q = int(s * (1 / period))
+	print 1 / period
+	test_obj.toggle_port(8)
+	test_obj.toggle_port(4)
+	test_obj.set_pulse_length(8, .1)
+	test_obj.set_wave_length(8, .3)
+	test_obj.set_pulse_length(4, .25)
 
-    t = time.time()
-    for x in range(0, q):
-        t += period
-        while t > time.time():
-            pass
-        test_obj.send_signal()
-    test_obj.toggle_port(2)
-    test_obj.toggle_port(3)
-    test_obj.toggle_port(5)
-    test_obj.toggle_port(6)
-    test_obj.toggle_port(7)
-    test_obj.toggle_port(9)
-    test_obj.toggle_port(10)
-    test_obj.toggle_port(11)
-    test_obj.toggle_port(12)
-    test_obj.toggle_port(13)
-    test_obj.set_pulse_length(8, .5)
-    test_obj.set_wave_length(8, 1)
-    test_obj.set_wave_length(4, 1)
-    t = time.time()
-    for x in range(0, q):
-        t += period
-        while t > time.time():
-            pass
-        test_obj.send_signal()
+	t = time.time()
+	for x in range(0, q):
+		t += period
+		while t > time.time():
+			pass
+		test_obj.send_signal()
+	test_obj.toggle_port(2)
+	test_obj.toggle_port(3)
+	test_obj.toggle_port(5)
+	test_obj.toggle_port(6)
+	test_obj.toggle_port(7)
+	test_obj.toggle_port(9)
+	test_obj.toggle_port(10)
+	test_obj.toggle_port(11)
+	test_obj.toggle_port(12)
+	test_obj.toggle_port(13)
+	test_obj.set_pulse_length(8, .5)
+	test_obj.set_wave_length(8, 1)
+	test_obj.set_wave_length(4, 1)
+	t = time.time()
+	for x in range(0, q):
+		t += period
+		while t > time.time():
+			pass
+		test_obj.send_signal()
