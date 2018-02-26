@@ -1,14 +1,9 @@
-import random
-import sys
+import Tkinter as Tk
 
-import matplotlib
-matplotlib.use("TkAgg")
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
-from matplotlib.figure import Figure
-if sys.version_info[0] < 3:
-	import Tkinter as Tk
-else:
-	import tkinter as Tk
+# import matplotlib
+# matplotlib.use("TkAgg")
+# from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
+# from matplotlib.figure import Figure
 
 from widgets.InductorWidget import InductorWidget
 from widgets.ResetButton import ResetButton

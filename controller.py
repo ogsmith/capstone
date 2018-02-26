@@ -1,10 +1,10 @@
 import time
-from threading import Thread
+
 import serial.tools.list_ports
 import serial
+
 from model import Node_State_Model
 from view import View
-
 
 
 class StandardController:
@@ -18,7 +18,7 @@ class StandardController:
 
 		# Serial port may be different!
 		self.arduino = serial.Serial(port_id, 9600)
-		#self.arduino = None
+		# self.arduino = None
 		# connection takes 2 seconds to create
 		time.sleep(2)
 		self.model = Node_State_Model()

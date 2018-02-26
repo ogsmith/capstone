@@ -1,9 +1,4 @@
-import sys
-
-if sys.version_info[0] < 3:
-    import Tkinter as Tk
-else:
-    import tkinter as Tk
+import Tkinter as Tk
 
 class ResetButton():
     def __init__(self, master, inductors):
@@ -25,7 +20,3 @@ class ResetButton():
         self.controller.reset()
         for inductor in self.inductors:
             inductor.reset()
-
-
-
-
