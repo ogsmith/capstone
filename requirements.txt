@@ -1,7 +1,5 @@
 pyserial==3.4
-matplotlib==2.1.2
 numpy==1.14.0
-pandas==0.22.0
 python-dateutil==2.6.1
 pytz==2018.3
 six==1.11.0

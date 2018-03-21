@@ -1,9 +1,12 @@
+WAVE_LENGTH = .5
+PULSE_LENGTH = .0002
+
 class Node():
     def __init__(self, port_number):
         self.port_number = port_number
         self.on_off = False
-        self.pulse_length = .0002
-        self.wave_length = .5
+        self.pulse_length = PULSE_LENGTH
+        self.wave_length = WAVE_LENGTH
         self.iteration = 0
         self.system_period = .0001
         self.c = .01 / self.system_period
@@ -107,6 +110,11 @@ class Node_State_Model():
 
     def get_wave_lengths(self):
         return map(Node.get_wave_lengths, self.ports)
+
+    def reset_pulse_and_wave_lengths(self):
+        for port in self.ports:
+            port.set_wave_length(WAVE_LENGTH)
+            port.set_pulse_length(PULSE_LENGTH)
 
 if __name__ == '__main__':
     test_class = Node_State_Model()
