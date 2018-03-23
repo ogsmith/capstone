@@ -10,15 +10,14 @@ from view import View
 class StandardController:
 	def __init__(self):
 		port_id = ""
-
 		ports = list(serial.tools.list_ports.comports())
 		for p in ports:
 			if "Generic" in p[1] and port_id == "":
 				port_id = p[0]
 
 		# Serial port may be different!
-		self.arduino = serial.Serial(port_id, 9600)
-		# self.arduino = None
+		# self.arduino = serial.Serial(port_id, 9600)
+		self.arduino = None
 		# connection takes 2 seconds to create
 		time.sleep(2)
 		self.model = Node_State_Model()

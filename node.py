@@ -29,14 +29,15 @@ class Node:
 		self.pulse_length = x
 	def send_state(self):
 		if on_off:
-			if self.iteration > (self.wave_length/self.system_period):
-				self.iteration = 0
-			if (self.iteration * system_period) <  pulse_length:
-				self.iteration = self.iteration + 1
-				return True
-			else:
-				self.iteration = self.iteration + 1
-				return False
+			# if self.iteration > (self.wave_length/self.system_period):
+			# 	self.iteration = 0
+			# if (self.iteration * system_period) <  pulse_length:
+			# 	self.iteration = self.iteration + 1
+			# 	return True
+			# else:
+			# 	self.iteration = self.iteration + 1
+			# 	return False
+			return True
 		else:
-			self.iteration = 0
+			# self.iteration = 0
 			return False
