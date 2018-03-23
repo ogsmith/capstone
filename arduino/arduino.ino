@@ -12,8 +12,71 @@
 #define LED11 11
 #define LED12 12
 
+// Boolean that switches states (hard on off)
+// Defaults on pins that are currently in model
+// Main loop that controls amount of time they're on and off
+//
+//
 
-// Using http://slides.justen.eng.br/python-e-arduino as refference
+// Code inspired from https://forum.arduino.cc/index.php?topic=137920.0
+class Pulse
+{
+    byte _ledPin;                                                  
+    boolean _ledOn;                                                
+    unsigned long _lastToggle;                              
+    unsigned long _duration;                                       
+
+public:
+    unsigned long onDuration;                                      
+    unsigned long offDuration;                                     
+    boolean pulse;                                              
+
+    Pulse(byte);                                               
+    void begin(unsigned long, unsigned long);                      
+    boolean check(void);                                        
+};
+
+Pulse::Pulse(byte pin)
+{
+    _ledPin = pin;
+    _lastToggle = 0;
+    _duration = 0;
+    _ledOn = false;
+    pulse = false;
+}
+
+void Pulse::begin(unsigned long on, unsigned long off)
+{
+    pinMode(_ledPin, OUTPUT);                                 
+    onDuration = on;
+    offDuration = off;
+}
+
+boolean Pulse::check()
+{
+    if (!pulse) return false;                                    
+    if (millis() - _lastToggle > _duration)                  
+    {
+        if (_ledOn)                                                
+        {
+            digitalWrite (_ledPin, LOW);                          
+            _ledOn = false;                                        
+            _lastToggle = millis();                        
+            _duration = offDuration;                              
+        }
+        else
+        {
+            digitalWrite (_ledPin, HIGH);                         
+            _ledOn = true;                                        
+            _lastToggle = millis();                          
+            _duration = onDuration;                               
+        }
+    }
+    return true;
+}
+
+                                 
+
 
 void setup() {
     pinMode(LED0, OUTPUT);
@@ -32,50 +95,80 @@ void setup() {
     Serial.begin(9600);
 }
 
+
 void loop() {
+
+
+    //Problem is that Serial Listener Loop takes 12ms to complete
+    //How do I only call Serial
     if (Serial.available()) {
         char serialListener = Serial.read();
         if (serialListener == '0') {
-            digitalWrite(LED0, HIGH);
+            Pulse turn_on(0); 
+            turn_on.begin(.2, 500); 
+            turn_on.pulse = true;        
         }
         if (serialListener == '1') {
-            digitalWrite(LED1, HIGH);
+            Pulse turn_on(1); 
+            turn_on.begin(.2, 500); 
+            turn_on.pulse = true;   
         }
         else if (serialListener == '2') {
-//            digitalWrite(LED2, HIGH);
-            PORTD |= _BV(LED2);
+            Pulse turn_on(2);  
+            turn_on.begin(.2, 500); 
+            turn_on.pulse = true;  
         }
         else if (serialListener == '3') {
-            digitalWrite(LED3, HIGH);
-//              PORTD |= _BV (3);        
+            Pulse turn_on(3);  
+            turn_on.begin(.2, 500);  
+            turn_on.pulse = true;  
         }
               
         else if (serialListener == '4') {
-            digitalWrite(LED4, HIGH);
+            Pulse turn_on(4);  
+            turn_on.begin(.2, 500); 
+            turn_on.pulse = true; 
+            turn_on.check();
         }
         else if (serialListener == '5') {
-            digitalWrite(LED5, HIGH);
+            Pulse turn_on(5);
+            turn_on.begin(.2, 500); 
+            turn_on.pulse = true;    
         }
         else if (serialListener == '6') {
-            digitalWrite(LED6, HIGH);
+            Pulse turn_on(6);  
+            turn_on.begin(.2, 500); 
+            turn_on.pulse = true;  
         }
         else if (serialListener == '7') {
-            digitalWrite(LED7, HIGH);
+            Pulse turn_on(7); 
+            turn_on.begin(.2, 500); 
+            turn_on.pulse = true;   
         }
         else if (serialListener == '8') {
-            digitalWrite(LED8, HIGH);
+            Pulse turn_on(8);  
+            turn_on.begin(.2, 500); 
+            turn_on.pulse = true;  
         } 
         else if (serialListener == '9') {
-            digitalWrite(LED9, HIGH);
+            Pulse turn_on(9);  
+            turn_on.begin(.2, 500); 
+            turn_on.pulse = true;  
         } 
         else if (serialListener == 't') {
-            digitalWrite(LED10, HIGH);
+            Pulse turn_on(10);  
+            turn_on.begin(.2, 500); 
+            turn_on.pulse = true;  
         } 
         else if (serialListener == 'e') {
-            digitalWrite(LED11, HIGH);
+            Pulse turn_on(11); 
+            turn_on.begin(.2, 500); 
+            turn_on.pulse = true;   
         } 
         else if (serialListener == 'w') {
-            digitalWrite(LED12, HIGH);
+            Pulse turn_on(12);  
+            turn_on.begin(.2, 500); 
+            turn_on.pulse = true;  
         } 
         else if (serialListener == ')') {
             digitalWrite(LED0, LOW);
@@ -84,12 +177,10 @@ void loop() {
             digitalWrite(LED1, LOW);
         }
         else if (serialListener == '@') {
-//            digitalWrite(LED2, LOW);
-            PORTD &= ~_BV(LED2);
+            digitalWrite(LED2, LOW);
         }
         else if (serialListener == '#') {
             digitalWrite(LED3, LOW);
-//            PORTD &= ~_BV (3);        
         }
         else if (serialListener == '$') {
             digitalWrite(LED4, LOW);
@@ -119,6 +210,7 @@ void loop() {
             digitalWrite(LED12, LOW);
         }
     }
+    
 }
 
 
