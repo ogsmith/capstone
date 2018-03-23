@@ -13,7 +13,6 @@ class Node():
 
     def toggle_onoff(self):
         self.on_off = not self.on_off
-
     def set_onoff(self, state):
         self.on_off = state
 
@@ -57,6 +56,7 @@ class Node_State_Model():
     def __init__(self):
         self.port_numbers = 14
         self.ports = []
+        self.changes = []
         for i in range(self.port_numbers):
             self.ports.append(Node(i))
 
@@ -78,9 +78,11 @@ class Node_State_Model():
     # Port_Number as int -> null
     def toggle_port_onoff(self, port_number):
         self.ports[port_number].toggle_onoff()
+        self.changes.append(port_number)
 
     def toggle_port_enabled(self, port_number):
         self.ports[port_number].toggle_enabled()
+        self.changes.append(port_number)
 
     def get_port_enabled(self, port_number):
         return self.ports[port_number].get_enabled()
@@ -89,12 +91,15 @@ class Node_State_Model():
     # Port_Number as int, bool -> null
     def set_port_to(self, port_number, state):
         self.ports[port_number].set_onoff(state)
+        self.changes.append(port_number)
 
     def set_pulse_lengths(self, port_number, time):
         self.ports[port_number].set_pulse_length(time)
+        self.changes.append(port_number)
 
     def set_wave_lengths(self, port_number, time):
         self.ports[port_number].set_wave_length(time)
+        self.changes.append(port_number);
 
     def get_pulse_length(self, port_number):
         return self.ports[port_number].get_pulse_length()

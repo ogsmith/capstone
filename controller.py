@@ -25,18 +25,17 @@ class StandardController:
 		self.view = View(num_inductors=self.model.port_numbers)
 		self.port_count = self.model.port_numbers
 
+
 	def run_view(self):
 		self.view.register(self, self.model)
 		self.view.mainloop()
 
 	def run_loop(self):
-		period = .0001
 		while 1:
-			t = time.time()
-			t += period
-			while t > time.time():
-				pass
-			self.send_signal()
+			if len(self.model.changes) != 0:
+				self.send_signal()
+
+
 
 	# gets the state of a paticular port from the model
 	# Port_Number as int -> binary int
@@ -105,62 +104,75 @@ class StandardController:
 		for i in range(self.port_count):
 			self.set_port_to(i, False)
 
+	def encode_data(self, port_number, on_off, pulse, wave_length):
+		on_off_val = 0 if on_off is False else 1
+		return "p"+str(port_number)+"o"+str(on_off_val)+"u"+str(pulse)+"w"+str(wave_length)+"e"
+
 	def send_signal(self):
 		port = self.getstates_firing()
 		if self.arduino is not None:
-			if port[0]:
-				self.arduino.write("0")
-			else:
-				self.arduino.write(")")
-			if port[1]:
-				self.arduino.write("1")
-			else:
-				self.arduino.write("!")
-			if port[2]:
-				self.arduino.write("2")
-			else:
-				self.arduino.write("@")
-			if port[3]:
-				self.arduino.write("3")
-			else:
-				self.arduino.write("#")
-			if port[4]:
-				self.arduino.write("4")
-			else:
-				self.arduino.write("$")
-			if port[5]:
-				self.arduino.write("5")
-			else:
-				self.arduino.write("%")
-			if port[6]:
-				self.arduino.write("6")
-			else:
-				self.arduino.write("^")
-			if port[7]:
-				self.arduino.write("7")
-			else:
-				self.arduino.write("&")
-			if port[8]:
-				self.arduino.write("8")
-			else:
-				self.arduino.write("*")
-			if port[9]:
-				self.arduino.write("9")
-			else:
-				self.arduino.write("(")
-			if port[10]:
-				self.arduino.write("t")
-			else:
-				self.arduino.write("T")
-			if port[11]:
-				self.arduino.write("e")
-			else:
-				self.arduino.write("E")
-			if port[12]:
-				self.arduino.write("w")
-			else:
-				self.arduino.write("W")
+			for port_number in self.model.changes:
+				on_off = self.get_state_onoff(port_number)
+				pulse = self.get_pulse_length(port_number)
+				wave_length = self.get_wave_length(port_number)
+				for x in self.encode_data(port_number, on_off, pulse, wave_length):
+					self.arduino.write(x)
+					print(x)
+		self.model.changes = []
+			# if port[0]:
+			# 	self.arduino.write("0")
+			# else:
+			# 	self.arduino.write(")")
+			# if port[1]:
+			# 	self.arduino.write("1")
+			# else:
+			# 	self.arduino.write("!")
+			# if port[2]:
+			# 	self.arduino.write("2")
+			# else:
+			# 	self.arduino.write("@")
+			# if port[3]:
+			# 	self.arduino.write("3")
+			# else:
+			# 	self.arduino.write("#")
+			# if port[4]:
+			# 	self.arduino.write("4")
+			# else:
+			# 	self.arduino.write("$")
+			# if port[5]:
+			# 	self.arduino.write("5")
+			# else:
+			# 	self.arduino.write("%")
+			# if port[6]:
+			# 	self.arduino.write("6")
+			# else:
+			# 	self.arduino.write("^")
+			# if port[7]:
+			# 	self.arduino.write("7")
+			# else:
+			# 	self.arduino.write("&")
+			# if port[8]:
+			# 	self.arduino.write("8")
+			# else:
+			# 	self.arduino.write("*")
+			# if port[9]:
+			# 	self.arduino.write("9")
+			# else:
+			# 	self.arduino.write("(")
+			# if port[10]:
+			# 	self.arduino.write("t")
+			# else:
+			# 	self.arduino.write("T")
+			# if port[11]:
+			# 	self.arduino.write("e")
+			# else:
+			# 	self.arduino.write("E")
+			# if port[12]:
+			# 	self.arduino.write("w")
+			# else:
+			# 	self.arduino.write("W")
 
+		self.model.has_changed = False
 if __name__ == '__main__':
 	test_obj = StandardController()
 	times = []
