@@ -76,10 +76,6 @@ boolean Pulse::check()
 }
 
                                  
-<<<<<<< HEAD
-Pulse turn_on(4);
-=======
->>>>>>> de74ae59f141cc0620ad16091fa0f2bac358952d
 
 
 void setup() {
@@ -99,7 +95,6 @@ void setup() {
     Serial.begin(9600);
    
 }
-<<<<<<< HEAD
 void loop() {
     
 
@@ -222,123 +217,6 @@ void loop() {
 //        else if (serialListener == 'W') {
 //            digitalWrite(LED12, LOW);
 //        }
-=======
-
-
-void loop() {
-
-
-    //Problem is that Serial Listener Loop takes 12ms to complete
-    //How do I only call Serial
-    if (Serial.available()) {
-        char serialListener = Serial.read();
-        if (serialListener == '0') {
-            Pulse turn_on(0); 
-            turn_on.begin(.2, 500); 
-            turn_on.pulse = true;        
-        }
-        if (serialListener == '1') {
-            Pulse turn_on(1); 
-            turn_on.begin(.2, 500); 
-            turn_on.pulse = true;   
-        }
-        else if (serialListener == '2') {
-            Pulse turn_on(2);  
-            turn_on.begin(.2, 500); 
-            turn_on.pulse = true;  
-        }
-        else if (serialListener == '3') {
-            Pulse turn_on(3);  
-            turn_on.begin(.2, 500);  
-            turn_on.pulse = true;  
-        }
-              
-        else if (serialListener == '4') {
-            Pulse turn_on(4);  
-            turn_on.begin(.2, 500); 
-            turn_on.pulse = true; 
-            turn_on.check();
-        }
-        else if (serialListener == '5') {
-            Pulse turn_on(5);
-            turn_on.begin(.2, 500); 
-            turn_on.pulse = true;    
-        }
-        else if (serialListener == '6') {
-            Pulse turn_on(6);  
-            turn_on.begin(.2, 500); 
-            turn_on.pulse = true;  
-        }
-        else if (serialListener == '7') {
-            Pulse turn_on(7); 
-            turn_on.begin(.2, 500); 
-            turn_on.pulse = true;   
-        }
-        else if (serialListener == '8') {
-            Pulse turn_on(8);  
-            turn_on.begin(.2, 500); 
-            turn_on.pulse = true;  
-        } 
-        else if (serialListener == '9') {
-            Pulse turn_on(9);  
-            turn_on.begin(.2, 500); 
-            turn_on.pulse = true;  
-        } 
-        else if (serialListener == 't') {
-            Pulse turn_on(10);  
-            turn_on.begin(.2, 500); 
-            turn_on.pulse = true;  
-        } 
-        else if (serialListener == 'e') {
-            Pulse turn_on(11); 
-            turn_on.begin(.2, 500); 
-            turn_on.pulse = true;   
-        } 
-        else if (serialListener == 'w') {
-            Pulse turn_on(12);  
-            turn_on.begin(.2, 500); 
-            turn_on.pulse = true;  
-        } 
-        else if (serialListener == ')') {
-            digitalWrite(LED0, LOW);
-        }
-        else if (serialListener == '!') {
-            digitalWrite(LED1, LOW);
-        }
-        else if (serialListener == '@') {
-            digitalWrite(LED2, LOW);
-        }
-        else if (serialListener == '#') {
-            digitalWrite(LED3, LOW);
-        }
-        else if (serialListener == '$') {
-            digitalWrite(LED4, LOW);
-        }
-        else if (serialListener == '%') {
-            digitalWrite(LED5, LOW);
-        }
-        else if (serialListener == '^') {
-            digitalWrite(LED6, LOW);
-        }
-        else if (serialListener == '&') {
-            digitalWrite(LED7, LOW);
-        }
-        else if (serialListener == '*') {
-            digitalWrite(LED8, LOW);
-        } 
-        else if (serialListener == '(') {
-            digitalWrite(LED9, LOW);
-        } 
-        else if (serialListener == 'T') {
-            digitalWrite(LED10, LOW);
-        } 
-        else if (serialListener == 'E') {
-            digitalWrite(LED11, LOW);
-        } 
-        else if (serialListener == 'W') {
-            digitalWrite(LED12, LOW);
-        }
->>>>>>> de74ae59f141cc0620ad16091fa0f2bac358952d
     }
     
 }
