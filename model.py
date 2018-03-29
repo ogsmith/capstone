@@ -1,5 +1,5 @@
 WAVE_LENGTH = .5
-PULSE_LENGTH = .0002
+PULSE_LENGTH = .2
 
 class Node():
     def __init__(self, port_number):
@@ -59,7 +59,7 @@ class Node_State_Model():
     def __init__(self):
         self.port_numbers = 14
         self.ports = []
-        self.changes = []
+        self.changes = False
         for i in range(self.port_numbers):
             self.ports.append(Node(i))
 
@@ -81,11 +81,11 @@ class Node_State_Model():
     # Port_Number as int -> null
     def toggle_port_onoff(self, port_number):
         self.ports[port_number].toggle_onoff()
-        self.changes.append(port_number)
+        self.changes = True
 
     def toggle_port_enabled(self, port_number):
         self.ports[port_number].toggle_enabled()
-        self.changes.append(port_number)
+        self.changes = True
 
     def get_port_enabled(self, port_number):
         return self.ports[port_number].get_enabled()
@@ -94,15 +94,15 @@ class Node_State_Model():
     # Port_Number as int, bool -> null
     def set_port_to(self, port_number, state):
         self.ports[port_number].set_onoff(state)
-        self.changes.append(port_number)
+        self.changes = True
 
     def set_pulse_lengths(self, port_number, time):
         self.ports[port_number].set_pulse_length(time)
-        self.changes.append(port_number)
+        self.changes = True
 
     def set_wave_lengths(self, port_number, time):
         self.ports[port_number].set_wave_length(time)
-        self.changes.append(port_number);
+        self.changes = True
 
     def get_pulse_length(self, port_number):
         return self.ports[port_number].get_pulse_length()
@@ -111,10 +111,10 @@ class Node_State_Model():
         return self.ports[port_number].get_wave_length()
 
     def get_pulse_lengths(self):
-        return map(Node.get_pulse_lengths, self.ports)
+        return map(Node.get_pulse_length, self.ports)
 
     def get_wave_lengths(self):
-        return map(Node.get_wave_lengths, self.ports)
+        return map(Node.get_wave_length, self.ports)
 
     def reset_pulse_and_wave_lengths(self):
         for port in self.ports:

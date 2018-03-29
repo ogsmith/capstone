@@ -1,223 +1,112 @@
-#define LED0 0
-#define LED1 1
-#define LED2 2
-#define LED3 3
-#define LED4 4
-#define LED5 5
-#define LED6 6
-#define LED7 7
-#define LED8 8
-#define LED9 9
-#define LED10 10
-#define LED11 11
-#define LED12 12
-
-// Boolean that switches states (hard on off)
-// Defaults on pins that are currently in model
-// Main loop that controls amount of time they're on and off
-//
-//
-
-// Code inspired from https://forum.arduino.cc/index.php?topic=137920.0
-class Pulse
-{
-    byte _ledPin;                                                  
-    boolean _ledOn;                                                
-    unsigned long _lastToggle;                              
-    unsigned long _duration;                                       
-
-public:
-    unsigned long onDuration;                                      
-    unsigned long offDuration;                                     
-    boolean pulse;                                              
-
-    Pulse(byte);                                               
-    void begin(unsigned long, unsigned long);                      
-    boolean check(void);                                        
-};
-
-Pulse::Pulse(byte pin)
-{
-    _ledPin = pin;
-    _lastToggle = 0;
-    _duration = 0;
-    _ledOn = false;
-    pulse = false;
-}
-
-void Pulse::begin(unsigned long on, unsigned long off)
-{
-    pinMode(_ledPin, OUTPUT);                                 
-    onDuration = on;
-    offDuration = off;
-}
-
-boolean Pulse::check()
-{
-    if (!pulse) return false;                                    
-    if (millis() - _lastToggle > _duration)                  
-    {
-        if (_ledOn)                                                
-        {
-            digitalWrite (_ledPin, LOW);                          
-            _ledOn = false;                                        
-            _lastToggle = millis();                        
-            _duration = offDuration;                              
-        }
-        else
-        {
-            digitalWrite (_ledPin, HIGH);                         
-            _ledOn = true;                                        
-            _lastToggle = millis();                          
-            _duration = onDuration;                               
-        }
-    }
-    return true;
-}
-
-                                 
-
-
 void setup() {
-    pinMode(LED0, OUTPUT);
-    pinMode(LED1, OUTPUT);
-    pinMode(LED2, OUTPUT);
-    pinMode(LED3, OUTPUT);
-    pinMode(LED4, OUTPUT);
-    pinMode(LED5, OUTPUT);
-    pinMode(LED6, OUTPUT);
-    pinMode(LED7, OUTPUT);
-    pinMode(LED8, OUTPUT);
-    pinMode(LED9, OUTPUT);
-    pinMode(LED10, OUTPUT);
-    pinMode(LED11, OUTPUT);
-    pinMode(LED12, OUTPUT);
     Serial.begin(9600);
-   
+    pinMode(20, OUTPUT);
+    pinMode(21, OUTPUT);
+    pinMode(22, OUTPUT);
+    pinMode(23, OUTPUT);
+    pinMode(24, OUTPUT);
+    pinMode(25, OUTPUT);
+    pinMode(26, OUTPUT);
+    pinMode(27, OUTPUT);
+    pinMode(28, OUTPUT);
+    pinMode(29, OUTPUT);
+    pinMode(30, OUTPUT);
+    pinMode(31, OUTPUT);
+    pinMode(31, OUTPUT);
+    pinMode(32, OUTPUT);
+    pinMode(33, OUTPUT);
+    pinMode(34, OUTPUT);
+    pinMode(35, OUTPUT);
+    pinMode(36, OUTPUT);
+    pinMode(37, OUTPUT);
+    pinMode(38, OUTPUT);
 }
-void loop() {
-    
+  bool bool_val = true;
+  String write_to = String("");
+  String delay_set = String("");
+  String delays;
+  float pulse_lengths[14];
+  String wave_length = String("");
+  float wave = 0;
+  String message = String("");
+  float delay_val = 0;
+  int d = 0;
+  int ports[14];
+  String port_number = String("");
+  int p = 0;
+  int port_val = 0;
+  
+void configure_ports(char ser){
 
+  if (ser == 'd') {
+        write_to = "delays";
+   }
+  else if (ser == 'w'){
+        write_to = "wave_length";
+  }
+  else if (ser == 'p'){
+        write_to = "ports";
+  }
+  else if(ser == 'e'){
+        d = d+1;
+        delay_val = delays.toFloat();
+        Serial.println(delay_val);
+        pulse_lengths[d] = delay_val;
+        delays = "";
+  }
+  else if (ser == 't'){
+       p = p + 1;
+       port_val = port_number.toInt();
+       Serial.println(port_val);
+       ports[p] = port_val;
+       port_number = ""; 
+  }
+  else if (ser == 'l'){
+    wave = wave_length.toFloat();
+    wave_length = "";
+    p = 0;
+    d = 0;
+    bool_val = false;
+  }
+  else {
+     if (write_to == "delays"){
+         delays += ser;
+      }
+     if (write_to == "wave_length"){
+         wave_length += ser;
+         
+      }
+     if (write_to == "ports"){
+         port_number+=ser;
+     }
+  }
+}
+void loop() {    
     if (Serial.available()) {
-        char serialListener = Serial.read();;
-        char message[15]; 
-        int i = 0;
+        char serialListener = Serial.read();
+        delay(200);
+        configure_ports(serialListener);
+//        delay(5);
+//        while(bool_val){
+//          
+//        }
+//        bool_val = true;
+//        for(int p=0;p<14;p++){
+//          Serial.println(ports[p]);
+//          Serial.println(pulse_lengths[p]);
+//          Serial.println(wave);
+//        }
         
-//        while (&serialListener != "e") {
-//          serialListener = Serial.read();
-//          message[i] = serialListener;
-//          i = i+1;
-//          Serial.println(serialListener);
-//        }
-
-      Serial.println(serialListener);
-//        if (serialListener == '0') {
-//            Pulse turn_on(0); 
-//            turn_on.begin(.2, 500); 
-//            turn_on.pulse = true;        
-//        }
-//        if (serialListener == '1') {
-//            Pulse turn_on(1); 
-//            turn_on.begin(.2, 500); 
-//            turn_on.pulse = true;   
-//        }
-//        else if (serialListener == '2') {
-//            Pulse turn_on(2);  
-//            turn_on.begin(.2, 500); 
-//            turn_on.pulse = true;  
-//        }
-//        else if (serialListener == '3') {
-//            Pulse turn_on(3);  
-//            turn_on.begin(.2, 500);  
-//            turn_on.pulse = true;  
-//        }
-//              
-//        else if (serialListener == '4') {
-//            Pulse turn_on(4);  
-//            turn_on.begin(.2, 500); 
-//            turn_on.pulse = true; 
-//            turn_on.check();
-//        }
-//        else if (serialListener == '5') {
-//            Pulse turn_on(5);
-//            turn_on.begin(.2, 500); 
-//            turn_on.pulse = true;    
-//        }
-//        else if (serialListener == '6') {
-//            Pulse turn_on(6);  
-//            turn_on.begin(.2, 500); 
-//            turn_on.pulse = true;  
-//        }
-//        else if (serialListener == '7') {
-//            Pulse turn_on(7); 
-//            turn_on.begin(.2, 500); 
-//            turn_on.pulse = true;   
-//        }
-//        else if (serialListener == '8') {
-//            Pulse turn_on(8);  
-//            turn_on.begin(.2, 500); 
-//            turn_on.pulse = true;  
-//        } 
-//        else if (serialListener == '9') {
-//            Pulse turn_on(9);  
-//            turn_on.begin(.2, 500); 
-//            turn_on.pulse = true;  
-//        } 
-//        else if (serialListener == 't') {
-//            Pulse turn_on(10);  
-//            turn_on.begin(.2, 500); 
-//            turn_on.pulse = true;  
-//        } 
-//        else if (serialListener == 'e') {
-//            Pulse turn_on(11); 
-//            turn_on.begin(.2, 500); 
-//            turn_on.pulse = true;   
-//        } 
-//        else if (serialListener == 'w') {
-//            Pulse turn_on(12);  
-//            turn_on.begin(.2, 500); 
-//            turn_on.pulse = true;  
-//        } 
-//        else if (serialListener == ')') {
-//            digitalWrite(LED0, LOW);
-//        }
-//        else if (serialListener == '!') {
-//            digitalWrite(LED1, LOW);
-//        }
-//        else if (serialListener == '@') {
-//            digitalWrite(LED2, LOW);
-//        }
-//        else if (serialListener == '#') {
-//            digitalWrite(LED3, LOW);
-//        }
-//        else if (serialListener == '$') {
-//            digitalWrite(LED4, LOW);
-//        }
-//        else if (serialListener == '%') {
-//            digitalWrite(LED5, LOW);
-//        }
-//        else if (serialListener == '^') {
-//            digitalWrite(LED6, LOW);
-//        }
-//        else if (serialListener == '&') {
-//            digitalWrite(LED7, LOW);
-//        }
-//        else if (serialListener == '*') {
-//            digitalWrite(LED8, LOW);
-//        } 
-//        else if (serialListener == '(') {
-//            digitalWrite(LED9, LOW);
-//        } 
-//        else if (serialListener == 'T') {
-//            digitalWrite(LED10, LOW);
-//        } 
-//        else if (serialListener == 'E') {
-//            digitalWrite(LED11, LOW);
-//        } 
-//        else if (serialListener == 'W') {
-//            digitalWrite(LED12, LOW);
-//        }
     }
-    
+
+    for (int i=0; i <= 15; i++){
+      digitalWrite(ports[i], LOW);
+      delayMicroseconds(pulse_lengths[i]); 
+   }
+
+   delayMicroseconds(wave);
+    for (int i=0; i <= 15; i++){
+      digitalWrite(ports[i], HIGH);
+    }
 }
 
