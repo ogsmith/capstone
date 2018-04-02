@@ -20,7 +20,7 @@ void setup() {
     pinMode(36, OUTPUT);
     pinMode(37, OUTPUT);
     pinMode(38, OUTPUT);
-}
+    
   bool bool_val = true;
   String write_to = String("");
   String delay_set = String("");
@@ -35,6 +35,21 @@ void setup() {
   String port_number = String("");
   int p = 0;
   int port_val = 0;
+}
+//  bool bool_val = true;
+//  String write_to = String("");
+//  String delay_set = String("");
+//  String delays;
+//  float pulse_lengths[14];
+//  String wave_length = String("");
+//  float wave = 0;
+//  String message = String("");
+//  float delay_val = 0;
+//  int d = 0;
+//  int ports[14];
+//  String port_number = String("");
+//  int p = 0;
+//  int port_val = 0;
   
 void configure_ports(char ser){
 
@@ -50,7 +65,7 @@ void configure_ports(char ser){
   else if(ser == 'e'){
         d = d+1;
         delay_val = delays.toFloat();
-        Serial.println(delay_val);
+        
         pulse_lengths[d] = delay_val;
         delays = "";
   }
@@ -84,20 +99,15 @@ void configure_ports(char ser){
 void loop() {    
     if (Serial.available()) {
         char serialListener = Serial.read();
-        delay(200);
         configure_ports(serialListener);
-//        delay(5);
-//        while(bool_val){
-//          
-//        }
-//        bool_val = true;
-//        for(int p=0;p<14;p++){
-//          Serial.println(ports[p]);
-//          Serial.println(pulse_lengths[p]);
-//          Serial.println(wave);
-//        }
-        
+        while(bool_val){
+              if (Serial.available()) {
+                  char serialListener = Serial.read();
+                  configure_ports(serialListener);
+        }}
+        bool_val = true;
     }
+    
 
     for (int i=0; i <= 15; i++){
       digitalWrite(ports[i], LOW);
