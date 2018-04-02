@@ -20,7 +20,8 @@ void setup() {
     pinMode(36, OUTPUT);
     pinMode(37, OUTPUT);
     pinMode(38, OUTPUT);
-    
+}
+
   bool bool_val = true;
   String write_to = String("");
   String delay_set = String("");
@@ -35,21 +36,6 @@ void setup() {
   String port_number = String("");
   int p = 0;
   int port_val = 0;
-}
-//  bool bool_val = true;
-//  String write_to = String("");
-//  String delay_set = String("");
-//  String delays;
-//  float pulse_lengths[14];
-//  String wave_length = String("");
-//  float wave = 0;
-//  String message = String("");
-//  float delay_val = 0;
-//  int d = 0;
-//  int ports[14];
-//  String port_number = String("");
-//  int p = 0;
-//  int port_val = 0;
   
 void configure_ports(char ser){
 
@@ -63,18 +49,19 @@ void configure_ports(char ser){
         write_to = "ports";
   }
   else if(ser == 'e'){
-        d = d+1;
         delay_val = delays.toFloat();
-        
         pulse_lengths[d] = delay_val;
+        d = d+1;
         delays = "";
   }
   else if (ser == 't'){
-       p = p + 1;
+    if(ports[14] == 0) {
        port_val = port_number.toInt();
-       Serial.println(port_val);
        ports[p] = port_val;
+       p = p + 1;
+//       Serial.println(ports[p]);
        port_number = ""; 
+    }  
   }
   else if (ser == 'l'){
     wave = wave_length.toFloat();
@@ -104,18 +91,27 @@ void loop() {
               if (Serial.available()) {
                   char serialListener = Serial.read();
                   configure_ports(serialListener);
-        }}
+               } else{
+                     bool_val = false;
+               }
+          
+        }
         bool_val = true;
     }
     
 
-    for (int i=0; i <= 15; i++){
+    
+
+    for (int i=0; i < 15; i++){
       digitalWrite(ports[i], LOW);
-      delayMicroseconds(pulse_lengths[i]); 
+      delayMicroseconds(pulse_lengths[i]);
+      Serial.println(ports[i]);
+      Serial.println(pulse_lengths[i]); 
    }
 
    delayMicroseconds(wave);
-    for (int i=0; i <= 15; i++){
+    for (int i=0; i < 15; i++){
+        Serial.println("************************************************************************HI THIS IS THE PRINT STATEMENT**********************************************************************************");
       digitalWrite(ports[i], HIGH);
     }
 }
