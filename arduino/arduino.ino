@@ -83,6 +83,14 @@ void configure_ports(char ser){
      }
   }
 }
+
+void digitalWriteLow(int pin, float pulse) {
+    digitalWrite(pin, LOW);
+//    Serial.println("ports:"+ String(pin));
+    delayMicroseconds(pulse);
+//    Serial.println("pulse lengths" + String(pulse)); 
+}
+
 void loop() {    
     if (Serial.available()) {
         char serialListener = Serial.read();
@@ -100,18 +108,14 @@ void loop() {
     }
     
 
+ for(int i=0; i< 14; i++){
+    digitalWriteLow(ports[i], pulse_lengths[i]); 
+ }
+  
     
-
-    for (int i=0; i < 15; i++){
-      digitalWrite(ports[i], LOW);
-      delayMicroseconds(pulse_lengths[i]);
-      Serial.println(ports[i]);
-      Serial.println(pulse_lengths[i]); 
-   }
-
+    Serial.println(wave);
    delayMicroseconds(wave);
-    for (int i=0; i < 15; i++){
-        Serial.println("************************************************************************HI THIS IS THE PRINT STATEMENT**********************************************************************************");
+    for (int i=0; i < 14; i++){
       digitalWrite(ports[i], HIGH);
     }
 }

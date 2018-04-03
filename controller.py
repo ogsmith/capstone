@@ -126,8 +126,8 @@ class StandardController:
 			return_string_2 = return_string_2 + "d" + str(unsorted_list[x][1]) + "e"
 		for x in range(self.port_count-7,self.port_count):
 			return_string_3 = return_string_3 + "d" + str(unsorted_list[x][1]) + "e"
-
 		return_string = return_string + "w" + str(self.get_wave_length(1)*1000000 - full_summation)+ "l"
+		return_string_3 = return_string_3 + "l"
 		return return_string, return_string_2, return_string_3
 
 	def send_signal(self):
@@ -141,6 +141,7 @@ class StandardController:
 			# self.arduino.write("l")
 
 			a,b,c = self.sort_port_numbers_and_delays()
+
 			self.arduino.write(a)
 			time.sleep(1)
 			self.arduino.write(b)
