@@ -16,26 +16,25 @@ class StandardController:
 				port_id = p[0]
 
 		# Serial port may be different!
-		# self.arduino = serial.Serial(port_id, 9600)
-		self.arduino = None
+		self.arduino = serial.Serial(port_id, 9600)
+		# self.arduino = None
 		# connection takes 2 seconds to create
 		time.sleep(2)
 		self.model = Node_State_Model()
 		self.view = View(num_inductors=self.model.port_numbers)
 		self.port_count = self.model.port_numbers
+		self.loop_delay = self.port_count*8
 
 	def run_view(self):
 		self.view.register(self, self.model)
 		self.view.mainloop()
 
 	def run_loop(self):
-		period = .0001
 		while 1:
-			t = time.time()
-			t += period
-			while t > time.time():
-				pass
-			self.send_signal()
+			if self.model.changes == True:
+				self.send_signal()
+
+
 
 	# gets the state of a paticular port from the model
 	# Port_Number as int -> binary int
@@ -104,61 +103,55 @@ class StandardController:
 		for i in range(self.port_count):
 			self.set_port_to(i, False)
 
+	def encode_data(self,pulse):
+		return "d"+str(pulse)+"e"
+
+	def sort_port_numbers_and_delays(self):
+		unsorted_list = []
+		for x in range(0,self.port_count):
+			unsorted_list.append([x,self.model.ports[x].pulse_length*1000000])
+
+		unsorted_list.sort(key=lambda x: x[1])
+		for x in range(0,self.port_count):
+			summation = sum(map(lambda x: x[1], unsorted_list[0:x]))
+			unsorted_list[x][1] = unsorted_list[x][1] - summation
+		unsorted_list[0][1] = unsorted_list[0][1] - self.loop_delay
+		return_string = ""
+		return_string_2 = ""
+		return_string_3 = ""
+		full_summation = sum(map(lambda x: x[1], unsorted_list))
+		for x in range(0,self.port_count):
+			return_string = return_string + "p" + str(unsorted_list[x][0]+20) + "t"
+		for x in range(0,self.port_count-7):
+			return_string_2 = return_string_2 + "d" + str(unsorted_list[x][1]) + "e"
+		for x in range(self.port_count-7,self.port_count):
+			return_string_3 = return_string_3 + "d" + str(unsorted_list[x][1]) + "e"
+
+		return_string = return_string + "w" + str(self.get_wave_length(1)*1000000 - full_summation)+ "l"
+		return return_string, return_string_2, return_string_3
+
 	def send_signal(self):
-		port = self.getstates_firing()
 		if self.arduino is not None:
-			if port[0]:
-				self.arduino.write("0")
-			else:
-				self.arduino.write(")")
-			if port[1]:
-				self.arduino.write("1")
-			else:
-				self.arduino.write("!")
-			if port[2]:
-				self.arduino.write("2")
-			else:
-				self.arduino.write("@")
-			if port[3]:
-				self.arduino.write("3")
-			else:
-				self.arduino.write("#")
-			if port[4]:
-				self.arduino.write("4")
-			else:
-				self.arduino.write("$")
-			if port[5]:
-				self.arduino.write("5")
-			else:
-				self.arduino.write("%")
-			if port[6]:
-				self.arduino.write("6")
-			else:
-				self.arduino.write("^")
-			if port[7]:
-				self.arduino.write("7")
-			else:
-				self.arduino.write("&")
-			if port[8]:
-				self.arduino.write("8")
-			else:
-				self.arduino.write("*")
-			if port[9]:
-				self.arduino.write("9")
-			else:
-				self.arduino.write("(")
-			if port[10]:
-				self.arduino.write("t")
-			else:
-				self.arduino.write("T")
-			if port[11]:
-				self.arduino.write("e")
-			else:
-				self.arduino.write("E")
-			if port[12]:
-				self.arduino.write("w")
-			else:
-				self.arduino.write("W")
+			# pulses = self.get_pulse_lengths()
+			# for pulse in pulses:
+			# 	for x in self.sort_port_numbers_and_delays(pulse):
+			# 			self.arduino.write(x)
+			# self.arduino.write("w")
+			# self.arduino.write(str(self.get_wave_length(1)))
+			# self.arduino.write("l")
+
+			a,b,c = self.sort_port_numbers_and_delays()
+			self.arduino.write(a)
+			time.sleep(1)
+			self.arduino.write(b)
+			time.sleep(1)
+			self.arduino.write(c)
+
+			print(a)
+			print(b)
+			print(c)
+
+		self.model.changes = False
 
 if __name__ == '__main__':
 	test_obj = StandardController()
