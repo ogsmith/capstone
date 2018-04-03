@@ -1,40 +1,65 @@
+from copy import copy
 import os
 import Tkinter as Tk
 
-BRAIN_IMAGE = 'brain_75.gif'
+BRAIN_IMAGE = 'brain_50_{}.gif'
 
-INDUCTOR_LOCATIONS = {
-    0: (250, 300),
-    1: (200, 200),
-    2: (400, 100),
-    3: (500, 400)
+LEFT_INDUCTOR_LOCATIONS = {
+    0: (80, 200),
+    1: (150, 250),
+    2: (300, 260),
+    3: (100, 120),
+    4: (200, 150),
+    5: (320, 175),
+    6: (10, 190),
+    7: (80, 70),
+    8: (250, 30),
+    9: (400, 70),
+    10: (460, 175)
+}
+
+RIGHT_INDUCTOR_LOCATIONS = {
+
 }
 
 class BrainImageWidget():
 
-    def __init__(self, master):
+    def __init__(self, master, side='right', wave_widget=None):
+        self.wave_widget = wave_widget
         self.master = master
+        self.side = side
         self.controller = None
         self.model = None
         current_path = os.path.dirname(os.path.abspath(__file__))
-        brain_image_path = os.path.join(os.path.split(current_path)[0], BRAIN_IMAGE)
+        brain_image_name = copy(BRAIN_IMAGE)
+        brain_image_name = brain_image_name.format(self.side)
+        brain_image_path = os.path.join(os.path.split(current_path)[0], brain_image_name)
         self.brain_image = Tk.PhotoImage(file=brain_image_path)
         self.brain_image.zoom(1, 2)
 
-        self.brain_label = Tk.Label(master, image=self.brain_image)
-        self.brain_label.grid(row=0)
+        frame_text = 'Right ' if self.side.lower() == 'right' else 'Left '
+        frame_text += 'Side of Brain'
+        self.frame = Tk.LabelFrame(master, text=frame_text, padx=10, pady=10)
+        self.frame.configure(background='white')
+        self.brain = Tk.Label(self.frame, image=self.brain_image)
+        self.brain.grid(row=1, column=0)
+        if side == 'left':
+            self.frame.grid(row=0, column=0)
+        else:
+            self.frame.grid(row=0, column=1)
         self.buttons = {}
         self.create_buttons()
 
     def create_buttons(self):
-        for number, location in INDUCTOR_LOCATIONS.iteritems():
-            button = Tk.Button(self.master, text=number, height=4, width=8, border=1, bg='red')
+        inductors = RIGHT_INDUCTOR_LOCATIONS if self.side == 'right' else LEFT_INDUCTOR_LOCATIONS
+        for number, location in inductors.iteritems():
+            button = Tk.Button(self.master, text=number, height=2, width=4, border=1, bg='red')
             button.place(x=location[0], y=location[1])
-            button['command'] = self.button_command
+            button['command'] = lambda number=number: self.button_command(number)
             self.buttons[number] = button
 
-    def button_command(self):
-        print 'press'
+    def button_command(self, number):
+        self.wave_widget.change_focused_inductor(number)
 
     def register(self, controller, model):
         self.controller = controller

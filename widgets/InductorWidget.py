@@ -1,11 +1,11 @@
 import Tkinter as Tk
 
-MAX_BUTTONS_PER_COLUMN = 5
-MAX_RETIRES = 3
+MAX_BUTTONS_PER_COLUMN = 6
 
 class InductorWidget():
-    def __init__(self, master, port_number, brain_widget, on_off=False, enabled=False, wave_length=.5, pulse_length=.0002):
-        self.brain_widget = brain_widget
+    def __init__(self, master, port_number, brain_widget_left, brain_widget_right, on_off=False, enabled=False, wave_length=.5, pulse_length=.0002):
+        self.brain_widget_left = brain_widget_left
+        self.brain_widget_right = brain_widget_right
         self.controller = None
         self.model = None
         self.port_number = port_number
@@ -56,7 +56,8 @@ class InductorWidget():
         on_off = self.model.get_state_onoff(self.port_number)
         new_inductor_color = 'green' if on_off is True else 'red'
         self.inductor_button['bg'] = new_inductor_color
-        self.brain_widget.change_inductor_state(self.port_number, on_off)
+        self.brain_widget_left.change_inductor_state(self.port_number, on_off)
+        self.brain_widget_right.change_inductor_state(self.port_number, on_off)
 
     def wave_length_input_command(self, sv):
         new_val = self.wave_length_var.get()
