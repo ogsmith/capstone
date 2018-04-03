@@ -8,8 +8,7 @@ class Node():
         self.pulse_length = PULSE_LENGTH
         self.wave_length = WAVE_LENGTH
         self.iteration = 0
-        self.system_period = .0001
-        self.c = .01 / self.system_period
+        self.system_period = .014
 
     def get_port_number(self):
         return self.port_number
@@ -43,9 +42,12 @@ class Node():
 
     def get_state(self):
         if self.on_off:
-            if (self.iteration * self.c) > (self.wave_length / self.system_period):
+            print self.iteration
+            print self.wave_length / self.system_period
+            print self.pulse_length / self.system_period
+            if (self.iteration) > (self.wave_length / self.system_period):
                 self.iteration = 0
-            if ((self.iteration * self.c) * self.system_period) < self.pulse_length:
+            if ((self.iteration)) < self.pulse_length/self.system_period:
                 self.iteration = self.iteration + 1
                 return True
             else:
@@ -117,28 +119,4 @@ class Node_State_Model():
             port.set_pulse_length(PULSE_LENGTH)
 
 if __name__ == '__main__':
-    test_class = Node_State_Model()
-    test_class.send_states()
-    print "state all"
-    print test_class.send_states()
-    print "state 4"
-    print test_class.send_state(4)
-    print "state 7"
-    print test_class.send_state(7)
-
-    print "toggle 7"
-    test_class.toggle_port(7)
-    print "set 4 to True"
-    test_class.set_port_to(4,True)
-
-    print "state all"
-    print test_class.send_states()
-    print "state 4"
-    print test_class.send_state(4)
-    print "state 7"
-    print test_class.send_state(7)
-
-    print "toggle 7"
-    test_class.toggle_port(7)
-    print "state 7"
-    print test_class.send_state(7)
+        print "hello world"

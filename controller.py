@@ -16,8 +16,8 @@ class StandardController:
 				port_id = p[0]
 
 		# Serial port may be different!
-		# self.arduino = serial.Serial(port_id, 9600)
-		self.arduino = None
+		self.arduino = serial.Serial(port_id, 9600)
+		# self.arduino = None
 		# connection takes 2 seconds to create
 		time.sleep(2)
 		self.model = Node_State_Model()
@@ -29,12 +29,12 @@ class StandardController:
 		self.view.mainloop()
 
 	def run_loop(self):
-		period = .0001
+		# period = .0001
 		while 1:
-			t = time.time()
-			t += period
-			while t > time.time():
-				pass
+			# t = time.time()
+			# t += period
+			# while t > time.time():
+			# 	pass
 			self.send_signal()
 
 	# gets the state of a paticular port from the model
@@ -106,6 +106,8 @@ class StandardController:
 
 	def send_signal(self):
 		port = self.getstates_firing()
+		voltage_on = any(self.get_states_onoff())
+		#print(port)
 		if self.arduino is not None:
 			if port[0]:
 				self.arduino.write("0")
@@ -159,42 +161,30 @@ class StandardController:
 				self.arduino.write("w")
 			else:
 				self.arduino.write("W")
+			if port[13]:
+				self.arduino.write("h")
+			else:
+				self.arduino.write("H")
+			if port[14]:
+				self.arduino.write("o")
+			else:
+				self.arduino.write("O")
+			if port[15]:
+				self.arduino.write("i")
+			else:
+				self.arduino.write("I")
+			if port[16]:
+				self.arduino.write("x")
+			else:
+				self.arduino.write("X")
+			if port[17]:
+				self.arduino.write("v")
+			else:
+				self.arduino.write("V")
+			if voltage_on:
+				self.arduino.write("z")
+			else:
+				self.arduino.write("Z")
 
 if __name__ == '__main__':
 	test_obj = StandardController()
-	times = []
-	period = .0001
-	s = .1
-	q = int(s * (1 / period))
-	print 1 / period
-	test_obj.toggle_port(8)
-	test_obj.toggle_port(4)
-	test_obj.set_pulse_length(8, .1)
-	test_obj.set_wave_length(8, .3)
-	test_obj.set_pulse_length(4, .25)
-
-	t = time.time()
-	for x in range(0, q):
-		t += period
-		while t > time.time():
-			pass
-		test_obj.send_signal()
-	test_obj.toggle_port(2)
-	test_obj.toggle_port(3)
-	test_obj.toggle_port(5)
-	test_obj.toggle_port(6)
-	test_obj.toggle_port(7)
-	test_obj.toggle_port(9)
-	test_obj.toggle_port(10)
-	test_obj.toggle_port(11)
-	test_obj.toggle_port(12)
-	test_obj.toggle_port(13)
-	test_obj.set_pulse_length(8, .5)
-	test_obj.set_wave_length(8, 1)
-	test_obj.set_wave_length(4, 1)
-	t = time.time()
-	for x in range(0, q):
-		t += period
-		while t > time.time():
-			pass
-		test_obj.send_signal()

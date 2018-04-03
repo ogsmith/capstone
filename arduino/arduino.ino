@@ -1,19 +1,22 @@
-#define LED0 0
-#define LED1 1
-#define LED2 2
-#define LED3 3
-#define LED4 4
-#define LED5 5
-#define LED6 6
-#define LED7 7
-#define LED8 8
-#define LED9 9
-#define LED10 10
-#define LED11 11
-#define LED12 12
-
-
-// Using http://slides.justen.eng.br/python-e-arduino as refference
+#define LED0 20
+#define LED1 21
+#define LED2 22
+#define LED3 23
+#define LED4 24
+#define LED5 25
+#define LED6 26
+#define LED7 27
+#define LED8 28
+#define LED9 29
+#define LED10 30
+#define LED11 31
+#define LED12 32
+#define LED13 33
+#define LED14 34
+#define LED15 35
+#define LED16 36
+#define LED17 37
+#define LED18 3
 
 void setup() {
     pinMode(LED0, OUTPUT);
@@ -29,6 +32,13 @@ void setup() {
     pinMode(LED10, OUTPUT);
     pinMode(LED11, OUTPUT);
     pinMode(LED12, OUTPUT);
+    pinMode(LED13, OUTPUT);
+    pinMode(LED14, OUTPUT);
+    pinMode(LED15, OUTPUT);
+    pinMode(LED16, OUTPUT);
+    pinMode(LED17, OUTPUT);
+    pinMode(LED3, OUTPUT);
+
     Serial.begin(9600);
 }
 
@@ -42,12 +52,11 @@ void loop() {
             digitalWrite(LED1, HIGH);
         }
         else if (serialListener == '2') {
-//            digitalWrite(LED2, HIGH);
-            PORTD |= _BV(LED2);
+            digitalWrite(LED2, HIGH);
+        
         }
         else if (serialListener == '3') {
             digitalWrite(LED3, HIGH);
-//              PORTD |= _BV (3);        
         }
               
         else if (serialListener == '4') {
@@ -76,7 +85,25 @@ void loop() {
         } 
         else if (serialListener == 'w') {
             digitalWrite(LED12, HIGH);
+        }
+        else if (serialListener == 'h') {
+            digitalWrite(LED13, HIGH);
         } 
+        else if (serialListener == 'o') {
+            digitalWrite(LED14, HIGH);
+        } 
+        else if (serialListener == 'i') {
+            digitalWrite(LED15, HIGH);
+        } 
+        else if (serialListener == 'x') {
+            digitalWrite(LED16, HIGH);
+        } 
+        else if (serialListener == 'v') {
+            digitalWrite(LED17, HIGH);
+        }  
+        else if (serialListener == 'z') {
+            digitalWrite(LED18, HIGH);
+        }  
         else if (serialListener == ')') {
             digitalWrite(LED0, LOW);
         }
@@ -84,12 +111,11 @@ void loop() {
             digitalWrite(LED1, LOW);
         }
         else if (serialListener == '@') {
-//            digitalWrite(LED2, LOW);
-            PORTD &= ~_BV(LED2);
+            digitalWrite(LED2, LOW);
+
         }
         else if (serialListener == '#') {
             digitalWrite(LED3, LOW);
-//            PORTD &= ~_BV (3);        
         }
         else if (serialListener == '$') {
             digitalWrite(LED4, LOW);
@@ -117,6 +143,24 @@ void loop() {
         } 
         else if (serialListener == 'W') {
             digitalWrite(LED12, LOW);
+        }
+        else if (serialListener == 'H') {
+            digitalWrite(LED13, LOW);
+        }
+        else if (serialListener == 'O') {
+            digitalWrite(LED14, LOW);
+        }
+        else if (serialListener == 'I') {
+            digitalWrite(LED15, LOW);
+        }
+        else if (serialListener == 'X') {
+            digitalWrite(LED16, LOW);
+        }
+        else if (serialListener == 'V') {
+            digitalWrite(LED17, LOW);
+        }
+        else if (serialListener == 'Z') {
+            digitalWrite(LED18, LOW);
         }
     }
 }
