@@ -34,11 +34,11 @@ class InductorWidget():
         self.input_frame = Tk.Frame(self.inductor_frame)
         self.input_frame.grid(row=0, column=1)
         self.input_frame.configure(background='white')
-        wave_length_label = Tk.Label(self.input_frame, text='Wave Length')
+        wave_length_label = Tk.Label(self.input_frame, text='Period')
         wave_length_label.grid(row=0)
         wave_length_label.configure(background='white')
 
-        pulse_length_label = Tk.Label(self.input_frame, text='Period', justify='right')
+        pulse_length_label = Tk.Label(self.input_frame, text='Pulse Length', justify='right')
         pulse_length_label.grid(row=1)
         pulse_length_label.configure(background='white')
 
