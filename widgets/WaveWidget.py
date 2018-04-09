@@ -47,7 +47,7 @@ class WaveWidget():
         self.status_label.config(bg='white')
         self.status_label.grid(row=1, column=1)
 
-        label = Tk.Label(self.top_frame, text='Period (microseconds): ')
+        label = Tk.Label(self.top_frame, text='Pulse Length (microseconds): ')
         label.config(anchor='w')
         label.config(width=LABEL_WIDTH)
         label.config(height=LABEL_HEIGHT)
@@ -61,7 +61,7 @@ class WaveWidget():
         self.pulse_label.config(font=("", FONT_SIZE))
         self.pulse_label.grid(row=2, column=1)
 
-        label = Tk.Label(self.top_frame, text='Wavelength (milliseconds): ')
+        label = Tk.Label(self.top_frame, text='Period (milliseconds): ')
         label.config(anchor='w')
         label.config(width=LABEL_WIDTH)
         label.config(height=LABEL_HEIGHT)

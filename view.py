@@ -54,13 +54,13 @@ class View():
 		self.unit_frame.grid(row=0, column=2)
 
 
-		wave_length_unit = Tk.Label(self.unit_frame, text='Wavelength: milliseconds', anchor='w', pady=3, padx=5)
+		wave_length_unit = Tk.Label(self.unit_frame, text='Period: milliseconds', anchor='w', pady=3, padx=5)
 		wave_length_unit.configure(bg='white')
 		wave_length_unit.configure(width=20)
 		wave_length_unit.config(font=("helvetica", 12))
 		wave_length_unit.grid(row=0,column=0)
 
-		period_unit = Tk.Label(self.unit_frame, text='Period: microseconds', anchor='w', pady=3, padx=5)
+		period_unit = Tk.Label(self.unit_frame, text='Pulse Length: microseconds', anchor='w', pady=3, padx=5)
 		period_unit.configure(bg='white')
 		period_unit.configure(width=20)
 		period_unit.config(font=("helvetica", 12))
