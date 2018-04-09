@@ -16,8 +16,8 @@ class StandardController:
 				port_id = p[0]
 
 		# Serial port may be different!
-		self.arduino = serial.Serial(port_id, 9600)
-		# self.arduino = None
+		# self.arduino = serial.Serial(port_id, 9600)
+		self.arduino = None
 		# connection takes 2 seconds to create
 		time.sleep(2)
 		self.model = Node_State_Model()
@@ -33,8 +33,6 @@ class StandardController:
 		while 1:
 			if self.model.changes == True:
 				self.send_signal()
-
-
 
 	# gets the state of a paticular port from the model
 	# Port_Number as int -> binary int

@@ -19,7 +19,17 @@ LEFT_INDUCTOR_LOCATIONS = {
 }
 
 RIGHT_INDUCTOR_LOCATIONS = {
-
+    6: (970, 190),
+    7: (900, 70),
+    8: (750, 30),
+    9: (600, 70),
+    10: (520, 175),
+    11: (875, 120),
+    12: (795, 150),
+    13: (680, 175),
+    14: (890, 200),
+    15: (830, 250),
+    16: (700, 260)
 }
 
 class BrainImageWidget():
@@ -53,17 +63,34 @@ class BrainImageWidget():
     def create_buttons(self):
         inductors = RIGHT_INDUCTOR_LOCATIONS if self.side == 'right' else LEFT_INDUCTOR_LOCATIONS
         for number, location in inductors.iteritems():
-            button = Tk.Button(self.master, text=number, height=2, width=4, border=1, bg='red')
+            button = Tk.Button(self.master, text=number+1, height=2, width=4, border=1, bg='red')
+            if number == 0:
+                button.configure(bd=3)
             button.place(x=location[0], y=location[1])
             button['command'] = lambda number=number: self.button_command(number)
             self.buttons[number] = button
 
     def button_command(self, number):
         self.wave_widget.change_focused_inductor(number)
+        self.fix_selected(number)
+        self.other_brain.fix_selected(number)
+
+    def fix_selected(self, number):
+        try:
+            for num, b in self.buttons.iteritems():
+                if number != num:
+                    b.configure(bd=1)
+            button = self.buttons[number]
+            button.configure(bd=3)
+        except KeyError:
+            pass
 
     def register(self, controller, model):
         self.controller = controller
         self.model = model
+
+    def register_other_brain(self, other_brain):
+        self.other_brain = other_brain
 
     def change_inductor_state(self, number, value):
         try:

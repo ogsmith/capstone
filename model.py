@@ -1,5 +1,5 @@
-WAVE_LENGTH = .5
-PULSE_LENGTH = .2
+WAVE_LENGTH = .1
+PULSE_LENGTH = .0002
 
 class Node():
     def __init__(self, port_number):
@@ -57,7 +57,7 @@ class Node():
 # Node states
 class Node_State_Model():
     def __init__(self):
-        self.port_numbers = 14
+        self.port_numbers = 17
         self.ports = []
         self.changes = False
         for i in range(self.port_numbers):

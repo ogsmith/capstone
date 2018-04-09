@@ -10,7 +10,7 @@ class ResetButton():
         self.reset_button_frame = Tk.Frame(master)
         self.reset_button_frame.grid(row=0, column=0, padx=0, pady=0)
 
-        self.reset_button = Tk.Button(self.reset_button_frame, width=30, height=4, text='Reset States', bg='grey')
+        self.reset_button = Tk.Button(self.reset_button_frame, width=30, height=4, text='Shutdown', bg='grey')
         self.reset_button.grid(row=0)
 
     def register(self, controller, model):
