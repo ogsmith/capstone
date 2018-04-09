@@ -8,7 +8,7 @@ class Node():
         self.pulse_length = PULSE_LENGTH
         self.wave_length = WAVE_LENGTH
         self.iteration = 0
-        self.system_period = .014
+        self.system_period = .018
 
     def get_port_number(self):
         return self.port_number
@@ -60,7 +60,7 @@ class Node():
 # Node states
 class Node_State_Model():
     def __init__(self):
-        self.port_numbers = 14
+        self.port_numbers = 18
         self.ports = []
         for i in range(self.port_numbers):
             self.ports.append(Node(i))

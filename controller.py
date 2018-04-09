@@ -16,8 +16,8 @@ class StandardController:
 				port_id = p[0]
 
 		# Serial port may be different!
-		self.arduino = serial.Serial(port_id, 9600)
-		# self.arduino = None
+		# self.arduino = serial.Serial(port_id, 9600)
+		self.arduino = None
 		# connection takes 2 seconds to create
 		time.sleep(2)
 		self.model = Node_State_Model()
@@ -183,8 +183,10 @@ class StandardController:
 				self.arduino.write("V")
 			if voltage_on:
 				self.arduino.write("z")
+				print("here")
 			else:
-				self.arduino.write("Z")
+				self.arduino.write("f")
+				print("here2")
 
 if __name__ == '__main__':
 	test_obj = StandardController()

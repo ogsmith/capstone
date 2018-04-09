@@ -37,13 +37,15 @@ void setup() {
     pinMode(LED15, OUTPUT);
     pinMode(LED16, OUTPUT);
     pinMode(LED17, OUTPUT);
-    pinMode(LED3, OUTPUT);
+    pinMode(LED18, OUTPUT);
 
     Serial.begin(9600);
 }
 
 void loop() {
     if (Serial.available()) {
+         digitalWrite(LED18, HIGH);
+
         char serialListener = Serial.read();
         if (serialListener == '0') {
             digitalWrite(LED0, HIGH);
@@ -101,9 +103,9 @@ void loop() {
         else if (serialListener == 'v') {
             digitalWrite(LED17, HIGH);
         }  
-        else if (serialListener == 'z') {
-            digitalWrite(LED18, HIGH);
-        }  
+//        else if (serialListener == 'z') {
+//            digitalWrite(LED18, HIGH);
+//        }  
         else if (serialListener == ')') {
             digitalWrite(LED0, LOW);
         }
@@ -159,9 +161,10 @@ void loop() {
         else if (serialListener == 'V') {
             digitalWrite(LED17, LOW);
         }
-        else if (serialListener == 'Z') {
-            digitalWrite(LED18, LOW);
-        }
+//        else if (serialListener == 'f') {
+//            digitalWrite(LED18, LOW);
+//        }
+      
     }
 }
 

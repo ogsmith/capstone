@@ -1,8 +1,9 @@
 import Tkinter as Tk
 
 class ResetButton():
-    def __init__(self, master, inductors, brain_widget):
-        self.brain_widget = brain_widget
+    def __init__(self, master, inductors, brain_widget_left, brain_widget_right):
+        self.brain_widget_left = brain_widget_left
+        self.brain_widget_right = brain_widget_right
         self.controller = None
         self.model = None
         self.inductors = inductors
@@ -21,4 +22,5 @@ class ResetButton():
         self.controller.reset()
         for inductor in self.inductors:
             inductor.reset()
-            self.brain_widget.change_inductor_state(inductor.port_number, False)
+            self.brain_widget_left.change_inductor_state(inductor.port_number, False)
+            self.brain_widget_right.change_inductor_state(inductor.port_number, False)

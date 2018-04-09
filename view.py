@@ -1,20 +1,15 @@
 import Tkinter as Tk
 
-# import matplotlib
-# matplotlib.use("TkAgg")
-# from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
-# from matplotlib.figure import Figure
-
 from widgets.InductorWidget import InductorWidget
 from widgets.ResetButton import ResetButton
 from widgets.PulseAndWaveLengthResetWidget import PulseAndWaveLengthResetWidget
 from widgets.BrainImageWidget import BrainImageWidget
+from widgets.WaveWidget import WaveWidget
 
-MAX_BUTTONS_PER_COLUMN = 5
 
 class View():
 
-	def __init__(self, num_inductors=14):
+	def __init__(self, num_inductors=17):
 		tk = Tk.Tk()
 		tk.title('GUI')
 		tk.resizable(width=True, height=True)
@@ -27,18 +22,30 @@ class View():
 		self.inductor_button_frame.grid(row=0)
 		self.inductor_button_frame.configure(background='white')
 
-		self.brain_widget_frame = Tk.Frame(tk, padx=5, pady=5)
-		self.brain_widget_frame.grid(row=0, column=1)
+		self.right_frame = Tk.Frame(tk)
+		self.right_frame.grid(row=0, column=1)
+		self.right_frame.configure(background='white')
+
+		self.brain_widget_frame = Tk.Frame(self.right_frame, padx=0, pady=0)
+		self.brain_widget_frame.grid(row=0, column=0)
 		self.brain_widget_frame.configure(background='white')
 
-		self.brain_widget = BrainImageWidget(self.brain_widget_frame)
+		self.wave_widget_frame = Tk.Frame(self.right_frame)
+		self.wave_widget_frame.grid(row=1, column=0)
+		self.wave_widget_frame.configure(background='white')
+
+		self.wave_widget = WaveWidget(self.wave_widget_frame)
+
+		self.brain_widget_left = BrainImageWidget(self.brain_widget_frame, 'left', self.wave_widget)
+		self.brain_widget_right = BrainImageWidget(self.brain_widget_frame, 'right', self.wave_widget)
 
 		for i in range(num_inductors):
-			inductor_widget = InductorWidget(self.inductor_button_frame, i, self.brain_widget)
+			inductor_widget = InductorWidget(self.inductor_button_frame, i, self.brain_widget_left, self.brain_widget_right)
 			self.inductors.append(inductor_widget)
 
-		self.reset_button = ResetButton(self.inductor_button_frame, self.inductors, self.brain_widget)
+		self.reset_button = ResetButton(self.inductor_button_frame, self.inductors, self.brain_widget_left, self.brain_widget_right)
 		self.pulse_and_wave_length_reset_button = PulseAndWaveLengthResetWidget(self.inductor_button_frame, self.inductors)
+
 
 
 	def register(self, controller, model):
@@ -47,6 +54,7 @@ class View():
 			inductor_widget.register(controller, model)
 		self.reset_button.register(controller, model)
 		self.pulse_and_wave_length_reset_button.register(controller, model)
+		self.wave_widget.register(controller, model)
 
 	def change_inductor_state(self, button):
 		# need to add interaction with controller
