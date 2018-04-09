@@ -2,51 +2,34 @@ from copy import copy
 import os
 import Tkinter as Tk
 
-BRAIN_IMAGE = 'brain_375_{}.gif'
+BRAIN_IMAGE = 'brain_50_{}.gif'
 
-# LEFT_INDUCTOR_LOCATIONS = {
-    # 1: (10, 190),
-    # 2: (80, 70),
-    # 3: (250, 30),
-    # 4: (400, 70),
-    # 5: (460, 175),
-    # 6: (120, 110),
-    # 7: (250, 110),
-    # 8: (360, 110),
-    # 9: (80, 190),
-    # 10: (250, 190),
-    # 11: (400, 190)	
-# }
-
-# RIGHT_INDUCTOR_LOCATIONS = {
-    # 12: (620, 110),
-    # 13: (750, 110),
-    # 14: (860, 110),
-    # 15: (580, 190),
-    # 16: (750, 190),
-    # 17: (900, 190)	
-# }
 LEFT_INDUCTOR_LOCATIONS = {
-    1: (7, 142),
-    2: (60, 52),
-    3: (187, 22),
-    4: (300, 54),
-    5: (345, 131),
-    6: (100, 82),
-    7: (187, 82),
-    8: (260, 82),
-    9: (60, 142),
-    10: (187, 142),
-    11: (300, 142)	
+    0: (80, 200),
+    1: (150, 250),
+    2: (300, 260),
+    3: (100, 120),
+    4: (200, 150),
+    5: (320, 175),
+    6: (10, 190),
+    7: (80, 70),
+    8: (250, 30),
+    9: (400, 70),
+    10: (460, 175)
 }
 
 RIGHT_INDUCTOR_LOCATIONS = {
-    12: (465, 82),
-    13: (562, 82),
-    14: (645, 82),
-    15: (435, 142),
-    16: (562, 142),
-    17: (675, 142)	
+    6: (970, 190),
+    7: (900, 70),
+    8: (750, 30),
+    9: (600, 70),
+    10: (520, 175),
+    11: (875, 120),
+    12: (795, 150),
+    13: (680, 175),
+    14: (890, 200),
+    15: (830, 250),
+    16: (700, 260)
 }
 
 class BrainImageWidget():
@@ -80,17 +63,34 @@ class BrainImageWidget():
     def create_buttons(self):
         inductors = RIGHT_INDUCTOR_LOCATIONS if self.side == 'right' else LEFT_INDUCTOR_LOCATIONS
         for number, location in inductors.iteritems():
-            button = Tk.Button(self.master, text=number, height=2, width=4, border=1, bg='red')
+            button = Tk.Button(self.master, text=number+1, height=2, width=4, border=1, bg='red')
+            if number == 0:
+                button.configure(bd=3)
             button.place(x=location[0], y=location[1])
             button['command'] = lambda number=number: self.button_command(number)
             self.buttons[number] = button
 
     def button_command(self, number):
         self.wave_widget.change_focused_inductor(number)
+        self.fix_selected(number)
+        self.other_brain.fix_selected(number)
+
+    def fix_selected(self, number):
+        try:
+            for num, b in self.buttons.iteritems():
+                if number != num:
+                    b.configure(bd=1)
+            button = self.buttons[number]
+            button.configure(bd=3)
+        except KeyError:
+            pass
 
     def register(self, controller, model):
         self.controller = controller
         self.model = model
+
+    def register_other_brain(self, other_brain):
+        self.other_brain = other_brain
 
     def change_inductor_state(self, number, value):
         try:

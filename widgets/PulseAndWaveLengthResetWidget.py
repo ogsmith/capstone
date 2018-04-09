@@ -10,7 +10,7 @@ class PulseAndWaveLengthResetWidget():
         self.pw_length_reset_frame.configure(background='white')
         self.pw_length_reset_frame.grid(row=0, column=1, padx=0, pady=0)
 
-        self.reset_button = Tk.Button(self.pw_length_reset_frame, width=30, height=4, text='Reset Pulse and Wave Length', bg='grey')
+        self.reset_button = Tk.Button(self.pw_length_reset_frame, width=30, height=4, text='Reset Period and Wave Length', bg='grey')
         self.reset_button.grid(row=0)
         self.reset_button['command'] = self.command
 

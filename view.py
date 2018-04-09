@@ -18,7 +18,7 @@ class View():
 		# tk.maxsize(width=700, height=500)
 		self.tk = tk
 		self.inductors = []
-		self.inductor_button_frame = Tk.LabelFrame(tk, text='Inductors', padx=5, pady=5)
+		self.inductor_button_frame = Tk.LabelFrame(tk, text='paTMS', padx=5, pady=5)
 		self.inductor_button_frame.grid(row=0)
 		self.inductor_button_frame.configure(background='white')
 
@@ -39,12 +39,33 @@ class View():
 		self.brain_widget_left = BrainImageWidget(self.brain_widget_frame, 'left', self.wave_widget)
 		self.brain_widget_right = BrainImageWidget(self.brain_widget_frame, 'right', self.wave_widget)
 
+		self.brain_widget_right.register_other_brain(self.brain_widget_left)
+		self.brain_widget_left.register_other_brain(self.brain_widget_right)
+
 		for i in range(num_inductors):
-			inductor_widget = InductorWidget(self.inductor_button_frame, i, self.brain_widget_left, self.brain_widget_right)
+			inductor_widget = InductorWidget(self.inductor_button_frame, i, self.brain_widget_left, self.brain_widget_right, self.wave_widget)
 			self.inductors.append(inductor_widget)
 
 		self.reset_button = ResetButton(self.inductor_button_frame, self.inductors, self.brain_widget_left, self.brain_widget_right)
 		self.pulse_and_wave_length_reset_button = PulseAndWaveLengthResetWidget(self.inductor_button_frame, self.inductors)
+
+		self.unit_frame = Tk.LabelFrame(self.inductor_button_frame, text='Units')
+		self.unit_frame.configure(bg='white')
+		self.unit_frame.grid(row=0, column=2)
+
+
+		wave_length_unit = Tk.Label(self.unit_frame, text='Wavelength: milliseconds', anchor='w', pady=3, padx=5)
+		wave_length_unit.configure(bg='white')
+		wave_length_unit.configure(width=20)
+		wave_length_unit.config(font=("helvetica", 12))
+		wave_length_unit.grid(row=0,column=0)
+
+		period_unit = Tk.Label(self.unit_frame, text='Period: microseconds', anchor='w', pady=3, padx=5)
+		period_unit.configure(bg='white')
+		period_unit.configure(width=20)
+		period_unit.config(font=("helvetica", 12))
+		period_unit.grid(row=1, column=0)
+
 
 
 
